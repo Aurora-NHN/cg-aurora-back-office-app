@@ -26,7 +26,7 @@ function Sidebar(){
                 </div>
                 <ul className="nav">
                     <li className="nav-item profile">
-                        <div className="profile-desc">c
+                        <div className="profile-desc">
                             <div className="profile-pic">
                                 <div className="count-indicator">
                                     <img className="img-xs rounded-circle " src={face15} alt=""/>
