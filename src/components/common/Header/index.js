@@ -4,7 +4,7 @@ import face4 from "~/assets/images/faces/face4.jpg";
 import face2 from "~/assets/images/faces/face2.jpg";
 import face3 from "~/assets/images/faces/face3.jpg";
 import {useDispatch , useSelector} from "react-redux";
-import {activeSidebar, toggle} from "~/features/toggle_sidebar";
+import {activeSidebar, toggle} from "~/features/toggleSidebar";
 function Header() {
  const  dispatch = useDispatch();
   const sidebarActive = useSelector((state) => state.sidebar.sidebarActive);
