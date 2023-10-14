@@ -1,0 +1,22 @@
+.cursor-pointer {
+  cursor: pointer;
+  :hover {
+    cursor: pointer !important;
+  }
+}
+
+.hover-scale-1-1{
+  :hover{
+    scale: 1.1;
+  }
+}
+
+.nav-item.section-active {
+  scale: 1.03;
+  color: white;
+  background-color: #31333b;
+  border-radius: 0.5em;
+  .nav-link{
+    color: white !important;
+  }
+}
