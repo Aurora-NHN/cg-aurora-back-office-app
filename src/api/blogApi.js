@@ -18,12 +18,44 @@ export const createBlog = async (blog) => {
     }
 }
 
+export const findBlogs = async () => {
+    try {
+        return await axios.get(
+            `${AURORA_API}/blogs`,
+            {
+                headers: {
+                    Authorization : "",
+                    "Content-Type" : "multipart/form-data"
+                }
+            }
+        );
+    }catch (e){
+        console.log("Find blog error", e)
+    }
+}
+
 export const updateBlog = async (blog) => {
     try {
         console.log("update blog: ",blog)
         return await axios.put(
             `${AURORA_API}/blogs`,
             blog,
+            {
+                headers: {
+                    Authorization : "",
+                    "Content-Type" : "multipart/form-data"
+                }
+            }
+        );
+    }catch (e){
+        return e.response
+    }
+}
+
+export const deleteBlogApi = async (id) => {
+    try {
+        return await axios.delete(
+            `${AURORA_API}/blogs/${id}`,
             {
                 headers: {
                     Authorization : "",

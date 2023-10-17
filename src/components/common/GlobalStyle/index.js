@@ -1,5 +1,5 @@
-import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.min"
+import "bootstrap/dist/css/bootstrap.min.css"
 import "~/assets/vendors/mdi/css/materialdesignicons.min.css"
 import "~/assets/scss/style.scss"
 import "react-quill/dist/quill.snow.css"

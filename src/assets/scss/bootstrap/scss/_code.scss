@@ -4,7 +4,7 @@ code {
   color: $code-color;
   word-wrap: break-word;
 
-  // Streamline the style when inside anchors to avoid broken underline and more
+  // Streamline the styles when inside anchors to avoid broken underline and more
   a > & {
     color: inherit;
   }
