@@ -13,6 +13,7 @@ import {selectBlog, setBlog} from "~/features/blogSlice";
 Quill.register('modules/imageResize', ImageResize);
 const initBlog = {
     title: 'New blog',
+    description:'',
     author: '3 psychic lady',
     mainImage: null,
     publish: false,
@@ -65,6 +66,53 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
     }, [blog.id]);
     const [editorModules, setEditorModule] = useState({});
 
+    const handleChange = (e) => {
+        let value;
+        const files = e.target.files;
+        if (files) {
+            setMainImage(e.target.files[0]);
+            const url = URL.createObjectURL(e.target.files[0])
+            setImgUrl(url)
+        } else {
+            value = e.target.type === "checkbox"
+                ? e.target.checked
+                : e.target.value;
+        }
+
+        setDisplayBlog(prevState => {
+            return {
+                ...prevState,
+                [e.target.name]: value
+            }
+        })
+    }
+    const clearImage = () => {
+        URL.revokeObjectURL(imgUrl)
+        setImgUrl("")
+        setMainImage(null)
+        fileRef.current.value = null;
+        dispatch(setBlog({
+            ...displayBlog,
+            mainImageUrl: null
+        }))
+    }
+    const handleNewPost = () => {
+        setNewPostLoading(true)
+        createBlog(initBlog).then(response => {
+            setNewPostLoading(false)
+            if (response){
+                if (response.status !== 201) {
+                    toast(`Create blog error! ${response.data.error}`, {type: "error"})
+                } else {
+                    toast("Blog created with id: " + response.data.id, {type: "success"})
+                    dispatch(setBlog(response.data))
+                }
+            }else {
+                toast("Connection error!",{type:"error"})
+            }
+        })
+    }
+
     useEffect(() => {
         setEditorModule({
             toolbar: {
@@ -91,50 +139,8 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
                 modules: ['Resize', 'DisplaySize']
             }
         })
+        setValue(blog.content)
     }, [blog.id])
-
-    useEffect(() => {
-        console.log('displayBlog', displayBlog)
-    }, [displayBlog])
-
-    const handleChange = (e) => {
-        let value;
-        const files = e.target.files;
-        if (files) {
-            setMainImage(e.target.files[0]);
-            const url = URL.createObjectURL(e.target.files[0])
-            setImgUrl(url)
-        } else {
-            value = e.target.type === "checkbox"
-                ? e.target.checked
-                : e.target.value;
-        }
-
-        setDisplayBlog(prevState => {
-            return {
-                ...prevState,
-                [e.target.name]: value
-            }
-        })
-    }
-    const clearImage = () => {
-        URL.revokeObjectURL(imgUrl)
-        setImgUrl("")
-        setMainImage(null)
-        fileRef.current.value = null;
-    }
-    const handleNewPost = () => {
-        setNewPostLoading(true)
-        createBlog(initBlog).then(response => {
-            setNewPostLoading(false)
-            if (response.status !== 201) {
-                toast(`Create blog error! ${response.data.error}`, {type: "error"})
-            } else {
-                toast("Blog created with id: " + response.data.id, {type: "success"})
-                dispatch(setBlog(response.data))
-            }
-        })
-    }
 
     useEffect(() => {
         if (displayBlog.id) {
@@ -162,10 +168,16 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
                 toastId: 98
             })
             updateBlog({...displayBlog, mainImage}).then(response => {
-                console.log('Submit response:')
-                console.log(response)
                 toast.dismiss(98)
-                toast('Saved!', {type: "success", autoClose: 1000})
+                if (response){
+                    if (response.status === 200){
+                        toast('Saved!', {type: "success", autoClose: 1000})
+                    }else {
+                        toast(`Save error! [${response.status}]`, {type: "error", autoClose: 1000})
+                    }
+                }else {
+                    toast('Connection error!', {type: "error", autoClose: 1000})
+                }
             })
         }
     }, [submitClicked])
@@ -214,6 +226,16 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
                                     />
                                 </div>
                                 <div className="mb-3">
+                                    <label htmlFor="description-1"
+                                           className="form-label text-info">Description</label>
+                                    <textarea
+                                           className="form-control text-light"
+                                           name="description" id="description-1"
+                                           value={displayBlog.description}
+                                           onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="mb-3">
                                     <label htmlFor="flexSwitchCheckDefault" className={"text-info"}>Publish
                                         status</label>
                                     <div className="form-check form-switch border p-2 rounded mt-0">
@@ -235,7 +257,7 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
                                 <div className={styles.clearImage} onClick={clearImage}>
                                     <i className="mdi mdi-close fs-1 text-warning"></i>
                                 </div>
-                                <div hidden={!!mainImage} className={clsx(styles.uploadArea)}>
+                                <div hidden={!!mainImage || !!displayBlog.mainImageUrl} className={clsx(styles.uploadArea)}>
                                     <input type="file" name="mainImage" ref={fileRef} onChange={handleChange}/>
                                     <div className={styles.uploadLabel}>
                                         <i className="mdi mdi-image fs-1">Upload main Image</i>
@@ -243,7 +265,9 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
                                 </div>
                                 <div className={styles.imgPreview}>
                                     <Image
-                                        src={imgUrl}
+                                        src={displayBlog.mainImageUrl
+                                            ?displayBlog.mainImageUrl
+                                            :imgUrl}
                                         alt="Image"
                                         width={"100%"}
                                         height={'300'}

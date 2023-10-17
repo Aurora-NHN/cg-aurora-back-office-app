@@ -4,6 +4,8 @@ import GlobalStyle from "~/components/common/GlobalStyle";
 import {Provider} from "react-redux";
 import store from "~/app/store";
 import {ToastContainer} from "react-toastify";
+import {ConfirmPopup} from "primereact/confirmpopup";
+import React from "react";
 
 function App() {
     return (
@@ -12,6 +14,7 @@ function App() {
                 <BrowserRouter>
                     <AppRoutes/>
                     <ToastContainer/>
+                    <ConfirmPopup/>
                 </BrowserRouter>
             </Provider>
         </GlobalStyle>

@@ -6,7 +6,7 @@ import BlogManagement from "~/components/blog_section/BlogManagement";
 
 
 function Blog(props) {
-    const param = useParams()
+    const param = useParams();
 
     const child = () => {
         switch (param.section) {

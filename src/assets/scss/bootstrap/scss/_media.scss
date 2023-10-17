@@ -1,8 +1,23 @@
 .media {
   display: flex;
   align-items: flex-start;
+  .media-image {
+    width: 180px;
+    height: 180px;
+    img{
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 1rem;
+    }
+  }
 }
 
 .media-body {
   flex: 1;
+  .description{
+    overflow: hidden;
+    max-height: 180px;
+    text-overflow: ellipsis;
+  }
 }
