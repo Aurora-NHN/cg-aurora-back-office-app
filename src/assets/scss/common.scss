@@ -1,0 +1,40 @@
+.cursor-pointer {
+  cursor: pointer;
+  :hover {
+    cursor: pointer !important;
+  }
+}
+
+.hover-scale-1-1{
+  transition: all ease-in-out 0.2s;
+  &:hover{
+    transform: scale(1.03);
+  }
+}
+
+.hover-bg-dark{
+  transition: background-color ease-in-out 0.5s;
+  &:hover{
+    background-color: #0f1015 !important;
+    background-clip: border-box;
+  }
+}
+
+.nav-item.section-active {
+  scale: 1.03;
+  color: white;
+  background-color: #31333b;
+  border-radius: 0.5em;
+  .nav-link{
+    color: white !important;
+  }
+}
+
+.smooth-transition{
+  transition: all ease-in-out 0.2s;
+}
+
+.scroll-bar {margin-left: 0;overflow-y: scroll;}
+.scroll-bar::-webkit-scrollbar-track {background-color: transparent;}
+.scroll-bar::-webkit-scrollbar {width: 2px;background-color: transparent;}
+.scroll-bar::-webkit-scrollbar-thumb {background-color: #bbbbbb;}

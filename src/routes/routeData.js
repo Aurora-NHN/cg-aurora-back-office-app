@@ -1,6 +1,10 @@
 import HomeLayout from "~/components/layout/HomeLayout";
-import Home from "~/pages/HomePage";
+
+import Blog from "~/pages/blog/Blog";
+import HomePage from "~/pages/HomePage";
 
 export const ROUT_DATA = [
-    {path: "/", element: Home, layout: HomeLayout},
+    {path: "/", element: HomePage, layout: HomeLayout},
+    {path: "/blogs/:section", element: Blog, layout: HomeLayout},
+    {path: "/blogs", element: Blog, layout: HomeLayout},
 ]

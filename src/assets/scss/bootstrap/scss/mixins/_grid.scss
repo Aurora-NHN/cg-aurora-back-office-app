@@ -60,7 +60,7 @@
 //
 // Specify on a parent element(e.g., .row) to force immediate children into NN
 // numberof columns. Supports wrapping to new lines, but does not do a Masonry
-// style grid.
+// styles grid.
 @mixin row-cols($count) {
   > * {
     flex: 0 0 100% / $count;

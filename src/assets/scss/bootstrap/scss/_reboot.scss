@@ -304,7 +304,7 @@ label {
 // Details at https://github.com/twbs/bootstrap/issues/24093
 button {
   // stylelint-disable-next-line property-disallowed-list
-  border-radius: 0;
+  //border-radius: 0;
 }
 
 // Work around a Firefox/IE bug where the transparent `button` background
@@ -354,7 +354,7 @@ select {
 
 // 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
 //    controls in Android 4.
-// 2. Correct the inability to style clickable types in iOS and Safari.
+// 2. Correct the inability to styles clickable types in iOS and Safari.
 button,
 [type="button"], // 1
 [type="reset"],
@@ -427,7 +427,7 @@ progress {
   vertical-align: baseline; // Add the correct vertical alignment in Chrome, Firefox, and Opera.
 }
 
-// Correct the cursor style of increment and decrement buttons in Chrome.
+// Correct the cursor styles of increment and decrement buttons in Chrome.
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
   height: auto;
@@ -435,10 +435,10 @@ progress {
 
 [type="search"] {
   // This overrides the extra rounded corners on search inputs in iOS so that our
-  // `.form-control` class can properly style them. Note that this cannot simply
+  // `.form-control` class can properly styles them. Note that this cannot simply
   // be added to `.form-control` as it's not specific enough. For details, see
   // https://github.com/twbs/bootstrap/issues/11586.
-  outline-offset: -2px; // 2. Correct the outline style in Safari.
+  outline-offset: -2px; // 2. Correct the outline styles in Safari.
   -webkit-appearance: none;
 }
 
@@ -451,7 +451,7 @@ progress {
 }
 
 //
-// 1. Correct the inability to style clickable types in iOS and Safari.
+// 1. Correct the inability to styles clickable types in iOS and Safari.
 // 2. Change font properties to `inherit` in Safari.
 //
 
