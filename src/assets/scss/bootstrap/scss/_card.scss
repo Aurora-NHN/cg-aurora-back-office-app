@@ -50,7 +50,8 @@
   // See: https://github.com/twbs/bootstrap/pull/28855
   min-height: 1px;
   padding: $card-spacer-x;
-  color: $card-color;
+  //color: $card-color;
+  color: white;
 }
 
 .card-title {
