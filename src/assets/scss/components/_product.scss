@@ -1,0 +1,209 @@
+
+.breadcrumb-wrapper-2 {
+  display: flex;
+  justify-content: space-between;
+  .breadcrumbs {
+    margin-top: 0 !important;
+  }
+}
+.breadcrumb-wrapper {
+  margin-bottom: 30px;
+  h1 {
+    color: black;
+    font-size: 25px;
+    font-weight: 500;
+    //@include media-breakpoint-down(xxl) {
+    //  font-size: 23px;
+    //}
+    //@include media-breakpoint-down(xl) {
+    //  font-size: 20px;
+    //}
+  }
+  .btn {
+    border-radius: 15px;
+    &:hover {
+      background-color: #88aaf3;
+    }
+  }
+  .breadcrumbs {
+    margin-top: 5px;
+    span {
+      i{
+        margin: 0 5px;
+        font-size: 18px;
+      }
+    }
+  }
+  &.breadcrumb-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    .btn {
+      margin: 10px 0;
+    }
+  }
+}
+.breadcrumb {
+  // margin-bottom: 0;
+  .breadcrumb-item {
+    font-size: 15px;
+    text-transform: capitalize;
+    a {
+      color: rgba(108, 117, 125, 1.00);
+
+      text-transform: capitalize;
+    }
+  }
+  &.breadcrumb-inverse {
+    border-color: rgb(76, 132, 255);
+    background-color: rgba(228, 237, 255,0.6);
+    .breadcrumb-item {
+      color: rgba(13, 110, 253, 1.00);
+      &:before {
+        color: inherit;
+      }
+    }
+  }
+  &.breadcrumb-primary {
+    border-color: rgba(13, 110, 253, 1.00);
+    background-color: rgba(13, 110, 253, 1.00);
+    .breadcrumb-item, .breadcrumb-item a {
+      color: #ffffff;
+    }
+    .breadcrumb-item:before {
+      color: #ffffff;
+    }
+  }
+  &.breadcrumb-pink {
+    border-color: rgba(214, 51, 132, 1.00);
+    background-color: rgba(214, 51, 132, 1.00);
+    .breadcrumb-item, .breadcrumb-item a {
+      color: #ffffff;
+    }
+    .breadcrumb-item:before {
+      color: #ffffff;
+    }
+  }
+  &.breadcrumb-success {
+    border-color: rgba(25, 135, 84, 1.00);
+    background-color: rgba(25, 135, 84, 1.00);
+    .breadcrumb-item, .breadcrumb-item a {
+      color: #ffffff;
+    }
+    .breadcrumb-item:before {
+      color: #ffffff;
+    }
+  }
+  &.breadcrumb-danger {
+    border-color: rgba(220, 53, 69, 1.00);
+    background-color: rgba(220, 53, 69, 1.00);
+    .breadcrumb-item, .breadcrumb-item a {
+      color: #ffffff;
+    }
+    .breadcrumb-item:before {
+      color: #ffffff;
+    }
+  }
+  &.breadcrumb-warning {
+    border-color: rgba(255, 193, 7, 1.00);
+    background-color: rgba(255, 193, 7, 1.00);
+    .breadcrumb-item, .breadcrumb-item a {
+      color: #ffffff;
+    }
+    .breadcrumb-item:before {
+      color: #ffffff;
+    }
+  }
+  &.breadcrumb-info {
+    border-color: rgba(13, 202, 240, 1.00);
+    background-color: rgba(13, 202, 240, 1.00);
+    .breadcrumb-item, .breadcrumb-item a {
+      color: #ffffff;
+    }
+    .breadcrumb-item:before {
+      color: #ffffff;
+    }
+  }
+}
+.breadcrumb-item+.breadcrumb-item::before {
+  content: '\f763';
+  top: 10px;
+  font-size: 7px;
+  color: rgba(108, 117, 125, 1.00);
+  position: relative;
+  transform: rotate(45deg);
+  font-family: Roboto, sans-serif;
+}
+div.dataTables_wrapper div.dataTables_length label {
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap
+}
+
+div.dataTables_wrapper div.dataTables_length select {
+  width: auto;
+  display: inline-block
+}
+@media screen and (max-width: 767px) {
+  div.dataTables_wrapper div.dataTables_length,div.dataTables_wrapper div.dataTables_filter,div.dataTables_wrapper div.dataTables_info,div.dataTables_wrapper div.dataTables_paginate {
+    text-align:center
+  }
+}
+
+
+/* Tables */
+
+table {
+  margin-bottom: 0;
+  color: #6c7293;
+  background-color: #191c24;
+
+  thead {
+    th {
+      border-top: 0;
+      border-bottom-width: 1px;
+      font-weight: 550;
+      color: #6c7293;
+
+
+      i {
+        margin-left: 0.325rem;
+      }
+    }
+  }
+
+  th,
+  td {
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+    }
+
+    .badge {
+      margin-bottom: 0;
+    }
+  }
+
+  &.table-borderless {
+    border: none;
+
+    tr,
+    td,
+    th {
+      border: none;
+    }
+  }
+  .table-dark {
+    background: rgba(52, 58, 64, 1.00);
+  }
+  &.table-contextual {
+    color: #ffffff;
+  }
+}
