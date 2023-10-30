@@ -85,28 +85,43 @@
   }
 }
 
-.loadBlogModal{
+.loadBlogModal {
   max-height: 70vh;
   overflow-y: scroll;
 }
 
-.reload {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.reloadWrapper {
+  .reload {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
   &:hover {
-    transform: rotate(180deg);
-    &:active{
-      color: #00a045;
-      transform: rotate(360deg);
+    cursor: pointer;
+    color: #bf8000;
+    .reload {
+      transform: rotate(180deg);
+    }
+
+    &:active {
+      .reload {
+        color: #00a045;
+        transform: rotate(360deg);
+      }
     }
   }
 }
 
-.reloadBtn{
+.reloadBtn {
   padding-top: 5px;
   padding-left: 2px;
 }
 
-.blogReload{
+.blogItem {
+  background: #0f121b;
+  background-clip: content-box;
+}
+
+.blogReload {
   position: absolute;
   display: flex;
   justify-content: center;

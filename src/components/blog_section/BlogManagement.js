@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getBlogs, selectBlogs, selectGetBlogLoading} from "~/features/blogSlice";
+import {getBlogs, selectBlogs, selectGetBlogLoading, selectGetBlogsSuccess} from "~/features/blogSlice";
 import clsx from "clsx";
 import styles from "./blog.module.scss"
 import {ProgressSpinner} from "primereact/progressspinner";
@@ -11,6 +11,7 @@ function BlogManagement() {
     const dispatch = useDispatch();
     const blogs = useSelector(selectBlogs);
     const loadingBlogs = useSelector(selectGetBlogLoading);
+    const getBlogsSuccess = useSelector(selectGetBlogsSuccess);
     const [displayBlogs, setDisplayBlogs] = useState([]);
     const [disableReload, setDisableReload] = useState(false);
 
@@ -25,7 +26,7 @@ function BlogManagement() {
     }
 
     useEffect(() => {
-        if (!blogs || blogs.length === 0) {
+        if (!getBlogsSuccess) {
             dispatch(getBlogs())
         }
     }, []);
@@ -38,12 +39,15 @@ function BlogManagement() {
         <div className="card text-light p-2 position-relative">
             {loadingBlogs && <div className={styles.blogReload}><ProgressSpinner/></div>}
             <div className="d-flex justify-content-center mt-2">
-                <div className={clsx("position-absolute start-0", {"cursor-pointer": !disableReload})}
+                <div className={clsx("position-absolute start-0 d-flex align-items-center"
+                    ,styles.reloadWrapper
+                    , {"cursor-pointer": !disableReload})}
                      onClick={handleReload}
                 >
                     <div className={clsx({[styles.reload]: !disableReload}, styles.reloadBtn, "ms-4")}>
                         <i className={clsx("mdi mdi-reload fs-3", {"text-secondary opacity-50": disableReload})}></i>
                     </div>
+                    <div className="ms-2">Reload</div>
                 </div>
                 <h1 className="text-info">Blog Management</h1>
             </div>
@@ -52,9 +56,9 @@ function BlogManagement() {
                     {
                         displayBlogs.map((blog, index) => (
                             <motion.div
-                                className="col-md-6 mt-2"
-                                initial={{ opacity: 0, scale: 0.2 }}
-                                animate={{ opacity: 1, scale: 1 }}
+                                className={"col-md-6 mt-2 " + styles.blogItem}
+                                initial={{opacity: 0, scale: 0.4}}
+                                animate={{opacity: 1, scale: 1}}
                                 transition={{
                                     duration: 0.8,
                                     delay: index * 0.3,
