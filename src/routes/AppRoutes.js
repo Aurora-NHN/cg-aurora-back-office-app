@@ -11,7 +11,7 @@ function AppRoutes(){
                 ROUT_DATA.map((route, index) => {
                     const Layout = route.layout
                     const Page = route.element
-                    return <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
+                    return <Route key={index} path={route.path} element={Layout !== null ? <Layout><Page/></Layout> : <Page/>}/>
                 })
             }
             <Route path="*" element={<HomeLayout><Home/></HomeLayout>}/>

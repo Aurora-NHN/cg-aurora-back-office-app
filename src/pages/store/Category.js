@@ -7,26 +7,59 @@ import {FileUpload} from "primereact/fileupload";
 import "./category.scss"
 import {Button} from "primereact/button";
 import {useDispatch, useSelector} from "react-redux";
-import {createCategory, getCategories, selectCategories, selectGetCategoriesSuccess} from "~/features/categorySlice";
+import {
+    createCategory,
+    deleteCategory,
+    getCategories,
+    selectCategories,
+    selectGetCategoriesSuccess
+} from "~/features/categorySlice";
 import logo from "~/assets/images/aurora.jpg"
+import {confirmPopup} from "primereact/confirmpopup";
 
 function Category() {
     const dispatch = useDispatch();
     const categories = useSelector(selectCategories);
     const getCategoriesSuccess = useSelector(selectGetCategoriesSuccess);
     const [showEntries, setShowEntries] = useState(20);
+    const [id, setId] = useState(null);
     const [active, setActive] = useState(false);
     const [thumb, setThumb] = useState(null);
-    const [name, setName] = useState("New category");
+    const [name, setName] = useState("");
     const [description, setDescription] = useState('');
 
     const handleSubmit = () => {
         dispatch(createCategory({
+            id,
             name,
             active,
             thumb,
             description
         }))
+    }
+    const handleEdit = (category) => {
+        setId(category.id)
+        setName(category.name);
+        setActive(category.active);
+        setDescription(category.description)
+    }
+    const handleCancelEdit = () => {
+        setId(null)
+        setName('');
+        setActive(false);
+        setDescription('')
+    }
+    const handleDelete = (category, event) => {
+        confirmPopup({
+            target: event.target,
+            message: 'Are you sure you want to delete this category?',
+            icon: 'pi pi-exclamation-triangle',
+            accept() {
+                dispatch(deleteCategory(category.id))
+            },
+            reject() {
+            }
+        })
     }
 
     useEffect(() => {
@@ -42,14 +75,22 @@ function Category() {
                     </div>
                     <div className="text-light">
                         <div className="d-flex flex-column mt-3">
-                            <label htmlFor="name">Name</label>
-                            <InputText id="name" value={name} onChange={(e) => setName(e.target.value)}/>
+                            <div className='d-flex justify-content-between'>
+                                <label htmlFor="name">Name</label>
+                                {id
+                                    ? <div className="d-flex align-items-center">
+                                        <div className="text-warning fs-7">Editing category. Id:{id}</div>
+                                        <div className="cursor-pointer ms-2" onClick={handleCancelEdit}>
+                                            <i className="mdi mdi-close text-danger"></i>
+                                        </div>
+                                    </div>
+                                    : <div></div>}
+                            </div>
+                            <InputText id="name" value={name} placeholder="New category" onChange={(e) => setName(e.target.value)}/>
                         </div>
                         <div className="d-flex flex-column mt-3">
                             <label>Thumb</label>
-                            <FileUpload name="demo[]"
-                                        url={'/api/upload'}
-                                        accept="image/*"
+                            <FileUpload accept="image/*"
                                         maxFileSize={1000000}
                                         headerStyle={{background: '#191c24', border: "none"}}
                                         contentStyle={{background: '#191c24', border: "none"}}
@@ -79,6 +120,7 @@ function Category() {
                                 name="description"
                                 rows={4}
                                 cols={30}
+                                value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
@@ -110,7 +152,7 @@ function Category() {
                     </div>
 
                     <div>
-                        <table className="table table-dark border table-responsive" style={{maxWidth:'100%'}}>
+                        <table className="table table-dark border table-responsive">
                             <thead className="text-info">
                             <tr>
                                 <th>Thumb
@@ -141,10 +183,14 @@ function Category() {
                                         <td>{category.name}</td>
                                         <td>product</td>
                                         <td>{category.description}</td>
-                                        <td>{category.active ? "Active" : "Inactive"}</td>
+                                        <td className={category.active ? "text-success" : "text-danger"}>{category.active ? "Active" : "Inactive"}</td>
                                         <td className="pe-2">
-                                            <button className="btn btn-sm btn-info">Edit</button>
-                                            <button className="btn btn-sm btn-danger ms-2">Delete</button>
+                                            <button className="btn btn-sm btn-info"
+                                                    onClick={() => handleEdit(category)}>Edit
+                                            </button>
+                                            <button className="btn btn-sm btn-danger ms-2"
+                                                    onClick={(event) => handleDelete(category,event)}>Delete
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
