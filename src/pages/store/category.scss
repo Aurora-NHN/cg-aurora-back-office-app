@@ -1,0 +1,18 @@
+.p-message-wrapper{
+    position: relative;
+    .p-message-close{
+        position: absolute !important;
+        top: 0 !important;
+        right: 0;
+    }
+    .p-message-summary{
+        font-size: 10px;
+    }
+}
+
+tr.category-line{
+    transition: background-color 0.3s ease-in-out;
+    &:hover{
+        background: rgba(77, 77, 77, 0.33);
+    }
+}

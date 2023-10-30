@@ -28,6 +28,7 @@ export const blogSlice = createSlice({
         values: [],
         uploadImageLoading: false,
         getBlogsLoading: false,
+        getBlogsSuccess: false,
         getBlogsError: null
     },
     reducers: {
@@ -43,10 +44,13 @@ export const blogSlice = createSlice({
             .addCase(getBlogs.fulfilled, (state, action) => {
                 state.values = action.payload;
                 state.getBlogLoading = false;
+                state.getBlogsSuccess = true;
+                state.getBlogsError = null;
             })
             .addCase(getBlogs.rejected, (state, action) => {
                 state.getBlogsError = action.payload
                 state.getBlogLoading = false;
+                state.getBlogsSuccess = false;
             })
 
             .addCase(deleteBlog.pending, (state) => {
@@ -70,4 +74,5 @@ export const {setBlog} = blogSlice.actions
 export const selectBlog = state => state.blog.value
 export const selectBlogs = state => state.blog.values
 export const selectGetBlogLoading = state => state.blog.getBlogLoading
+export const selectGetBlogsSuccess = state => state.blog.getBlogsSuccess
 export default blogSlice

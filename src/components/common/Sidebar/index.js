@@ -50,14 +50,14 @@ function Sidebar() {
                         </a>
                         <div className="collapse" id="ui-basic">
                             <ul className="nav flex-column sub-menu">
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Category</a></li>
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Sub category</a></li>
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Product</a></li>
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Product review</a></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                            to="/store/category">Category</Link></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                               to="/store/sub-category">Sub Category</Link></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                            to="/store/product">Product</Link></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                            to="/store/product-review">Product review</Link></li>
                             </ul>
                         </div>
                     </li>
