@@ -1,92 +1,89 @@
 import React, {useEffect, useState} from 'react';
 import {InputText} from "primereact/inputtext";
-import {InputTextarea} from "primereact/inputtextarea"
-import {Dropdown} from "primereact/dropdown";
-import {InputSwitch} from "primereact/inputswitch";
 import {FileUpload} from "primereact/fileupload";
-import "./category.scss"
+import {InputSwitch} from "primereact/inputswitch";
+import {InputTextarea} from "primereact/inputtextarea";
 import {Button} from "primereact/button";
+import {Dropdown} from "primereact/dropdown";
+import {TreeSelect} from "primereact/treeselect";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    createCategory,
-    deleteCategory,
-    getCategories,
+    createSubCategory,
+    getCategories, getSubCategories,
     selectCategories,
-    selectGetCategoriesSuccess, updateCategory
+    selectGetCategoriesSuccess,
+    selectGetSubCategoriesSuccess,
+    selectSubCategories
 } from "~/features/categorySlice";
 import logo from "~/assets/images/aurora.jpg"
-import {confirmPopup} from "primereact/confirmpopup";
-import subCategory from "~/pages/store/SubCategory";
 
-function Category() {
-    const dispatch = useDispatch();
-    const categories = useSelector(selectCategories);
-    const getCategoriesSuccess = useSelector(selectGetCategoriesSuccess);
+function SubCategory() {
+    const [nodes, setNodes] = useState([]);
     const [showEntries, setShowEntries] = useState(20);
+    const [thumb, setThumb] = useState(null);
+    const [name, setName] = useState('');
     const [id, setId] = useState(null);
     const [active, setActive] = useState(false);
-    const [thumb, setThumb] = useState(null);
-    const [name, setName] = useState("");
     const [description, setDescription] = useState('');
+    const [categoryId, setCategoryId] = useState(null);
+    const categories = useSelector(selectCategories);
+    const subCategories = useSelector(selectSubCategories);
+    const dispatch = useDispatch();
+    const getCategoriesSuccess = useSelector(selectGetCategoriesSuccess);
+    const getSubCategoriesSuccess = useSelector(selectGetSubCategoriesSuccess);
 
     const handleSubmit = () => {
-        if (!id) {
-            dispatch(createCategory({
-                id,
-                name,
-                active,
-                thumb,
-                description
-            }))
-        } else {
-            dispatch(updateCategory({
-                id,
-                name,
-                active,
-                thumb,
-                description
-            }))
-        }
-    }
-    const handleEdit = (category) => {
-        setThumb(null)
-        setId(category.id)
-        setName(category.name);
-        setActive(category.active);
-        setDescription(category.description ? category.description : '')
+        dispatch(createSubCategory({
+            id,
+            name,
+            active,
+            thumb,
+            description,
+            categoryId
+        }))
     }
     const handleCancelEdit = () => {
-        setId(null)
-        setName('');
-        setActive(false);
-        setDescription('')
+
     }
-    const handleDelete = (category, event) => {
-        confirmPopup({
-            target: event.target,
-            message: 'Are you sure you want to delete this category?',
-            icon: 'pi pi-exclamation-triangle',
-            accept() {
-                dispatch(deleteCategory(category.id))
-            },
-            reject() {
+    const handleDelete = () => {
+
+    }
+    const handleEdit = () => {
+
+    }
+    useEffect(() => {
+        const categoryNodes = categories.map(category => {
+            return {
+                label: category.name,
+                data: category.id,
+                key: category.id
             }
         })
-    }
+        setNodes(categoryNodes)
+    }, []);
 
     useEffect(() => {
         if (!getCategoriesSuccess)
             dispatch(getCategories())
+        if (!getSubCategoriesSuccess)
+            dispatch(getSubCategories())
     }, []);
-
     return (
         <div className="row">
             <div className="col-xl-4">
                 <div className="card min-vh-100 p-3">
                     <div className="border-bottom">
-                        <h1 className="text-info">Main Category</h1>
+                        <h1 className="text-info">Sub Category</h1>
                     </div>
                     <div className="text-light">
+                        <div className="d-flex flex-column mt-3">
+                            <label htmlFor="category-name">Category:</label>
+                            <TreeSelect options={nodes}
+                                        value={categoryId}
+                                        placeholder="Select category"
+                                        required
+                                        onChange={e => setCategoryId(e.value)}/>
+                        </div>
                         <div className="d-flex flex-column mt-3">
                             <div className='d-flex justify-content-between'>
                                 <label htmlFor="name">Name</label>
@@ -99,10 +96,11 @@ function Category() {
                                     </div>
                                     : <div></div>}
                             </div>
-                            <InputText id="name" value={name} placeholder="New category"
+                            <InputText id="name" value={name}
+                                       placeholder="New sub-category"
                                        onChange={(e) => setName(e.target.value)}/>
                         </div>
-                        <div className="d-flex flex-column mt-3">
+                        <div className="d-flex flex-column mt-3 border rounded">
                             <label>Thumb</label>
                             <FileUpload accept="image/*"
                                         maxFileSize={1000000}
@@ -126,7 +124,6 @@ function Category() {
                                          className="ms-2"
                                          onChange={(e) => setActive(e.value)}/>
                         </div>
-
                         <div className="d-flex flex-column mt-3">
                             <label htmlFor="description">Description</label>
                             <InputTextarea
@@ -174,10 +171,10 @@ function Category() {
                                 <th>Name
                                     <i className="mdi mdi-sort text-light" style={{backgroundColor: "#191c24"}}></i>
                                 </th>
-                                <th>Sub Categories
+                                <th>Categories
                                     <i className="mdi mdi-sort text-light" style={{backgroundColor: "#191c24"}}></i>
                                 </th>
-                                <th>Description
+                                <th>Product
                                     <i className="mdi mdi-sort text-light" style={{backgroundColor: "#191c24"}}></i>
                                 </th>
                                 <th>Status
@@ -189,36 +186,21 @@ function Category() {
                             </thead>
                             <tbody>
                             {
-                                categories.map((category, index) => (
+                                subCategories.map((subCategory, index) => (
                                     <tr className="category-line" key={index}>
-                                        <td><img src={category.thumbUrl || logo}
+                                        <td><img src={subCategory.thumbUrl || logo}
                                                  style={{width: 50, height: 50, objectFit: "cover"}} alt="thumb"/>
                                         </td>
-                                        <td>{category.name}</td>
-                                        <td style={{lineHeight: 1}}>
-                                            {
-                                                category.subCategories && category.subCategories.length > 0
-                                                    ? category.subCategories.map(item => {
-                                                        return <p
-                                                            className="rounded p-0 mb-0 border"
-                                                            style={{whiteSpace: "nowrap", backgroundColor:"#5c5c5cb0"}}
-                                                        >
-                                                           {item}
-                                                        </p>
-                                                    })
-                                                    : "No sub-category"
-                                            }
-                                        </td>
-                                        <td>{category.description}</td>
-                                        <td className={category.active ? "text-success" : "text-danger"}>
-                                            {category.active ? "Active" : "Inactive"}
-                                        </td>
-                                        <td className="pe-2 text-nowrap">
+                                        <td>{subCategory.name}</td>
+                                        <td>{subCategory.categoryName}</td>
+                                        <td>{subCategory.productTypeCount}</td>
+                                        <td className={subCategory.active ? "text-success" : "text-danger"}>{subCategory.active ? "Active" : "Inactive"}</td>
+                                        <td className="pe-2" style={{whiteSpace:"nowrap"}}>
                                             <button className="btn btn-sm btn-info"
-                                                    onClick={() => handleEdit(category)}>Edit
+                                                    onClick={() => handleEdit(subCategory)}>Edit
                                             </button>
                                             <button className="btn btn-sm btn-danger ms-2"
-                                                    onClick={(event) => handleDelete(category, event)}>Delete
+                                                    onClick={(event) => handleDelete(subCategory, event)}>Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -231,8 +213,7 @@ function Category() {
                 </div>
             </div>
         </div>
-    )
-        ;
+    );
 }
 
-export default Category;
+export default SubCategory;

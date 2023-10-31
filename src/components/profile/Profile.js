@@ -11,7 +11,6 @@ function Profile(props) {
     const logoutSuccess = useSelector(selectLogoutSuccess);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
         if (logoutSuccess) {
@@ -72,7 +71,7 @@ function Profile(props) {
                         </div>
                     </div>
                     <div className="preview-item-content">
-                        <li className="preview-subject mb-1" onClick={logout}>Log out</li>
+                        <span className="preview-subject mb-1" onClick={logout}>Log out</span>
                     </div>
                 </a>
 

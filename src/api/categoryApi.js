@@ -32,7 +32,25 @@ export const getCategoryApi = async () =>{
             }
         );
     } catch (e) {
-        console.log("Get categories error!", e)
+        console.log("Create categories error!", e)
+        return e.response;
+    }
+}
+
+export const updateCategoryApi = async (data) =>{
+    const token = localStorage.getItem('token')
+    try {
+        return await axios.put(
+            `${AURORA_API}/admin/categories`,
+            data,
+            {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }
+        );
+    } catch (e) {
+        console.log("Update categories error!", e)
         return e.response;
     }
 }
@@ -50,6 +68,40 @@ export const deleteCategoryApi = async (id) => {
         );
     } catch (e) {
         console.log("Delete category error!", e)
+        return e.response;
+    }
+}
+
+export const getSubCategoryApi = async () =>{
+    const token = localStorage.getItem('token')
+    try {
+        return await axios.get(
+            `${AURORA_API}/admin/sub-categories`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }
+        );
+    } catch (e) {
+        console.log("Get sub-categories error!", e)
+        return e.response;
+    }
+}
+
+export const createSubCategoryApi = async () =>{
+    const token = localStorage.getItem('token')
+    try {
+        return await axios.get(
+            `${AURORA_API}/admin/sub-categories`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }
+        );
+    } catch (e) {
+        console.log("Create categories error!", e)
         return e.response;
     }
 }
