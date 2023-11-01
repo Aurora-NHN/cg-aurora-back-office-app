@@ -4,7 +4,6 @@ import {AURORA_API} from "~/app/constants";
 export const getUserPage = async ({page, size, username}) => {
     let token = localStorage.getItem("token");
     let result = null;
-    console.log(`${AURORA_API}/admin/users?page=${page}&size=${size}&username=${username}`)
     try {
         result =  await axios.get(
             `${AURORA_API}/admin/users?page=${page}&size=${size}&username=${username}`, {
@@ -18,7 +17,6 @@ export const getUserPage = async ({page, size, username}) => {
     } catch (e) {
         return e.response
     }
-    console.log(result)
     return result;
 }
 export const register = async (data) => {
@@ -36,7 +34,6 @@ export const register = async (data) => {
     } catch (e) {
         return e.response
     }
-    console.log(result)
     return result;
 }
 

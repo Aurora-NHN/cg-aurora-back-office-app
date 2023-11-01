@@ -29,7 +29,6 @@ function UserList() {
     const successRegister = useSelector(selectSuccessOfRegister);
     const errorRegister = useSelector(selectErrorOfRegister);
     const closeModal = useRef();
-    const searchRef = useRef();
 
     const handleInfo = () => {
         navigate("/user/profile");
@@ -120,7 +119,7 @@ function UserList() {
 
     useEffect(() => {
         dispatch(getAllUserPage(pageable));
-    }, [pageable]);
+    }, [pageable, successRegister]);
 
     const handleRegisterSuccess = () => {
         dispatch(setSuccessOfRegister(false));
