@@ -70,7 +70,7 @@ body {
 
 // Content grouping
 //
-// 1. Add the correct box sizing in Firefox.
+// 1. AddProduct the correct box sizing in Firefox.
 // 2. Show the overflow in Edge and IE.
 
 hr {
@@ -106,8 +106,8 @@ p {
 // Abbreviations
 //
 // 1. Duplicate behavior to the data-* attribute for our tooltip plugin
-// 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
-// 3. Add explicit cursor to indicate changed behavior.
+// 2. AddProduct the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+// 3. AddProduct explicit cursor to indicate changed behavior.
 // 4. Remove the bottom border in Firefox 39-.
 // 5. Prevent the text-decoration to be skipped.
 
@@ -155,11 +155,11 @@ blockquote {
 
 b,
 strong {
-  font-weight: $font-weight-bolder; // Add the correct font weight in Chrome, Edge, and Safari
+  font-weight: $font-weight-bolder; // AddProduct the correct font weight in Chrome, Edge, and Safari
 }
 
 small {
-  @include font-size(80%); // Add the correct font size in all browsers
+  @include font-size(80%); // AddProduct the correct font size in all browsers
 }
 
 //
@@ -385,7 +385,7 @@ button::-moz-focus-inner,
 
 input[type="radio"],
 input[type="checkbox"] {
-  box-sizing: border-box; // 1. Add the correct box sizing in IE 10-
+  box-sizing: border-box; // 1. AddProduct the correct box sizing in IE 10-
   padding: 0; // 2. Remove the padding in IE 10-
 }
 
@@ -424,7 +424,7 @@ legend {
 }
 
 progress {
-  vertical-align: baseline; // Add the correct vertical alignment in Chrome, Firefox, and Opera.
+  vertical-align: baseline; // AddProduct the correct vertical alignment in Chrome, Firefox, and Opera.
 }
 
 // Correct the cursor styles of increment and decrement buttons in Chrome.
@@ -469,12 +469,12 @@ output {
 }
 
 summary {
-  display: list-item; // Add the correct display in all browsers
+  display: list-item; // AddProduct the correct display in all browsers
   cursor: pointer;
 }
 
 template {
-  display: none; // Add the correct display in IE
+  display: none; // AddProduct the correct display in IE
 }
 
 // Always hide an element with the `hidden` HTML attribute (from PureCSS).
