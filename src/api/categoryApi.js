@@ -72,11 +72,16 @@ export const deleteCategoryApi = async (id) => {
     }
 }
 
-export const getSubCategoryApi = async () =>{
+export const getSubCategoryApi = async (pageable) =>{
     const token = localStorage.getItem('token')
     try {
+        let url=`${AURORA_API}/admin/sub-categories?`
+        if (pageable){
+            if (pageable.page) url += `page=${pageable.page}&`
+            if (pageable.size) url += `size=${pageable.size}`
+        }
         return await axios.get(
-            `${AURORA_API}/admin/sub-categories`,
+            url,
             {
                 headers: {
                     Authorization: "Bearer " + token
@@ -89,11 +94,12 @@ export const getSubCategoryApi = async () =>{
     }
 }
 
-export const createSubCategoryApi = async () =>{
+export const createSubCategoryApi = async (data) =>{
     const token = localStorage.getItem('token')
     try {
-        return await axios.get(
+        return await axios.post(
             `${AURORA_API}/admin/sub-categories`,
+            data,
             {
                 headers: {
                     Authorization: "Bearer " + token

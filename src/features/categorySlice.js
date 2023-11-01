@@ -45,7 +45,7 @@ export const createSubCategory = createAsyncThunk("createSubCategory", async (ar
     return response.data.data;
 })
 export const getSubCategories = createAsyncThunk("getSubCategory", async (arg, thunkAPI) => {
-    const response = await getSubCategoryApi();
+    const response = await getSubCategoryApi(arg);
     if (response && response.status !== 200) {
         return thunkAPI.rejectWithValue(response.data.message)
     }
@@ -56,7 +56,7 @@ export const categorySlice = createSlice({
     name: 'category',
     initialState: {
         categories: [],
-        subCategories: [],
+        subCategoryPage: {},
         createCategorySuccess: false,
         getCategoriesSuccess: false,
         getSubCategoriesSuccess: false,
@@ -123,12 +123,25 @@ export const categorySlice = createSlice({
                 toast(action.payload, {type: "error"})
             })
 
+            .addCase(createSubCategory.pending, (state) => {
+                toast('Submitting...', {type: "info", isLoading: true, toastId: 'subCategorySubmitting'})
+            })
+            .addCase(createSubCategory.fulfilled, (state, action) => {
+                state.subCategoryPage.content.unshift(action.payload);
+                toast.dismiss('subCategorySubmitting')
+                toast('Sub-category submitted: ' + action.payload.name, {type: "success"})
+            })
+            .addCase(createSubCategory.rejected, (state, action) => {
+                toast.dismiss('subCategorySubmitting')
+                toast(action.payload, {type: "error"})
+            })
+
             .addCase(getSubCategories.pending, (state) => {
                 state.getSubCategoriesSuccess = false;
             })
             .addCase(getSubCategories.fulfilled, (state, action) => {
                 state.getSubCategoriesSuccess = true;
-                state.subCategories = action.payload
+                state.subCategoryPage = action.payload
             })
             .addCase(getSubCategories.rejected, (state, action) => {
                 state.getSubCategoriesSuccess = false;
@@ -138,7 +151,7 @@ export const categorySlice = createSlice({
 })
 
 export const selectCategories = state => state.category.categories;
-export const selectSubCategories = state => state.category.subCategories;
+export const selectSubCategoryPage = state => state.category.subCategoryPage;
 export const selectGetCategoriesSuccess = state => state.category.getCategoriesSuccess;
 export const selectGetSubCategoriesSuccess = state => state.category.getSubCategoriesSuccess;
 

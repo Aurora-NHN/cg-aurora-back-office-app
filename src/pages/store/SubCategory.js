@@ -8,36 +8,42 @@ import {Dropdown} from "primereact/dropdown";
 import {TreeSelect} from "primereact/treeselect";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    createSubCategory,
+    createSubCategory, deleteCategory,
     getCategories, getSubCategories,
     selectCategories,
     selectGetCategoriesSuccess,
     selectGetSubCategoriesSuccess,
-    selectSubCategories
+    selectSubCategoryPage
 } from "~/features/categorySlice";
 import logo from "~/assets/images/aurora.jpg"
+import {Paginator} from "primereact/paginator";
+import {confirmPopup} from "primereact/confirmpopup";
+import Reload from "~/components/blog_section/Reload";
 
 function SubCategory() {
     const [nodes, setNodes] = useState([]);
     const [showEntries, setShowEntries] = useState(20);
-    const [thumb, setThumb] = useState(null);
+    const [thumbFile, setThumb] = useState(null);
     const [name, setName] = useState('');
     const [id, setId] = useState(null);
     const [active, setActive] = useState(false);
     const [description, setDescription] = useState('');
     const [categoryId, setCategoryId] = useState(null);
     const categories = useSelector(selectCategories);
-    const subCategories = useSelector(selectSubCategories);
+    const subCategoryPage = useSelector(selectSubCategoryPage);
+    const [subCategories, setSubCategories] = useState([]);
     const dispatch = useDispatch();
     const getCategoriesSuccess = useSelector(selectGetCategoriesSuccess);
     const getSubCategoriesSuccess = useSelector(selectGetSubCategoriesSuccess);
+    const [rows, setRows] = useState(10);
+    const [first, setFirst] = useState(0);
 
     const handleSubmit = () => {
         dispatch(createSubCategory({
             id,
             name,
             active,
-            thumb,
+            thumbFile,
             description,
             categoryId
         }))
@@ -45,12 +51,33 @@ function SubCategory() {
     const handleCancelEdit = () => {
 
     }
-    const handleDelete = () => {
-
+    const handleDelete = (subCategory, event) => {
+        confirmPopup({
+            target: event.target,
+            message: 'Are you sure you want to delete?',
+            icon: 'pi pi-exclamation-triangle',
+            accept() {
+                // dispatch(deleteSubCategory(subCategories.id))
+            },
+            reject() {
+            }
+        })
     }
     const handleEdit = () => {
 
     }
+    const onPageChange = (e) => {
+        setFirst(e.first)
+        setRows(e.rows)
+        dispatch(getSubCategories({
+            page: e.page,
+            size: e.rows
+        }))
+    }
+    const handleReload = () => {
+        dispatch(getSubCategories())
+    }
+
     useEffect(() => {
         const categoryNodes = categories.map(category => {
             return {
@@ -63,11 +90,17 @@ function SubCategory() {
     }, []);
 
     useEffect(() => {
+        if (subCategoryPage.content)
+            setSubCategories(subCategoryPage.content)
+    }, [subCategoryPage]);
+
+    useEffect(() => {
         if (!getCategoriesSuccess)
             dispatch(getCategories())
         if (!getSubCategoriesSuccess)
             dispatch(getSubCategories())
     }, []);
+
     return (
         <div className="row">
             <div className="col-xl-4">
@@ -146,13 +179,7 @@ function SubCategory() {
 
                     <div className="d-flex justify-content-between border-bottom pb-1 text-light">
                         <div>
-                            <label htmlFor={"entries"}>Show</label>
-                            <Dropdown id={"entries"}
-                                      className="text-light ms-2"
-                                      value={showEntries}
-                                      onChange={(e) => setShowEntries(e.value)}
-                                      options={[20, 30, 50, {label: 'All', value: 100}]}/>
-                            <span className="ms-2">Entries</span>
+                            <Reload onReload={handleReload}/>
                         </div>
                         <div>
                             <div className="d-flex align-items-center">
@@ -163,6 +190,12 @@ function SubCategory() {
                     </div>
 
                     <div>
+                        <div>
+                            <Paginator first={first} rows={rows}
+                                       totalRecords={subCategoryPage.totalElements}
+                                       rowsPerPageOptions={[10, 20, 50, 100]}
+                                       onPageChange={onPageChange}/>
+                        </div>
                         <table className="table table-dark border table-responsive">
                             <thead className="text-info">
                             <tr>
@@ -189,13 +222,13 @@ function SubCategory() {
                                 subCategories.map((subCategory, index) => (
                                     <tr className="category-line" key={index}>
                                         <td><img src={subCategory.thumbUrl || logo}
-                                                 style={{width: 50, height: 50, objectFit: "cover"}} alt="thumb"/>
+                                                 style={{width: 50, height: 50, objectFit: "cover"}} alt="thumbFile"/>
                                         </td>
                                         <td>{subCategory.name}</td>
                                         <td>{subCategory.categoryName}</td>
                                         <td>{subCategory.productTypeCount}</td>
                                         <td className={subCategory.active ? "text-success" : "text-danger"}>{subCategory.active ? "Active" : "Inactive"}</td>
-                                        <td className="pe-2" style={{whiteSpace:"nowrap"}}>
+                                        <td className="pe-2" style={{whiteSpace: "nowrap"}}>
                                             <button className="btn btn-sm btn-info"
                                                     onClick={() => handleEdit(subCategory)}>Edit
                                             </button>
@@ -208,6 +241,12 @@ function SubCategory() {
                             }
                             </tbody>
                         </table>
+                        <div>
+                            <Paginator first={first} rows={rows}
+                                       totalRecords={subCategoryPage.totalElements}
+                                       rowsPerPageOptions={[10, 20, 50, 100]}
+                                       onPageChange={onPageChange}/>
+                        </div>
                     </div>
 
                 </div>

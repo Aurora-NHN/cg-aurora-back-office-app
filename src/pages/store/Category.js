@@ -17,6 +17,7 @@ import {
 import logo from "~/assets/images/aurora.jpg"
 import {confirmPopup} from "primereact/confirmpopup";
 import subCategory from "~/pages/store/SubCategory";
+import Reload from "~/components/blog_section/Reload";
 
 function Category() {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function Category() {
     const [showEntries, setShowEntries] = useState(20);
     const [id, setId] = useState(null);
     const [active, setActive] = useState(false);
-    const [thumb, setThumb] = useState(null);
+    const [thumbFile, setThumbFile] = useState(null);
     const [name, setName] = useState("");
     const [description, setDescription] = useState('');
 
@@ -35,7 +36,7 @@ function Category() {
                 id,
                 name,
                 active,
-                thumb,
+                thumbFile: thumbFile,
                 description
             }))
         } else {
@@ -43,13 +44,13 @@ function Category() {
                 id,
                 name,
                 active,
-                thumb,
+                thumbFile: thumbFile,
                 description
             }))
         }
     }
     const handleEdit = (category) => {
-        setThumb(null)
+        setThumbFile(null)
         setId(category.id)
         setName(category.name);
         setActive(category.active);
@@ -72,6 +73,9 @@ function Category() {
             reject() {
             }
         })
+    }
+    const handleReload = () => {
+        dispatch(getCategories())
     }
 
     useEffect(() => {
@@ -110,9 +114,9 @@ function Category() {
                                         contentStyle={{background: '#191c24', border: "none"}}
                                         uploadOptions={{style: {display: "none"}}}
                                         cancelOptions={{style: {borderRadius: 6}}}
-                                        onSelect={(e) => setThumb(e.files[0])}
-                                        onClear={() => setThumb(null)}
-                                        onRemove={() => setThumb(null)}
+                                        onSelect={(e) => setThumbFile(e.files[0])}
+                                        onClear={() => setThumbFile(null)}
+                                        onRemove={() => setThumbFile(null)}
                                         emptyTemplate={
                                             <p className="m-0">
                                                 Drag and drop files to here to upload.
@@ -149,13 +153,7 @@ function Category() {
 
                     <div className="d-flex justify-content-between border-bottom pb-1 text-light">
                         <div>
-                            <label htmlFor={"entries"}>Show</label>
-                            <Dropdown id={"entries"}
-                                      className="text-light ms-2"
-                                      value={showEntries}
-                                      onChange={(e) => setShowEntries(e.value)}
-                                      options={[20, 30, 50, {label: 'All', value: 100}]}/>
-                            <span className="ms-2">Entries</span>
+                            <Reload onReload={handleReload}/>
                         </div>
                         <div>
                             <div className="d-flex align-items-center">
@@ -192,14 +190,15 @@ function Category() {
                                 categories.map((category, index) => (
                                     <tr className="category-line" key={index}>
                                         <td><img src={category.thumbUrl || logo}
-                                                 style={{width: 50, height: 50, objectFit: "cover"}} alt="thumb"/>
+                                                 style={{width: 50, height: 50, objectFit: "cover"}} alt="thumbFile"/>
                                         </td>
                                         <td>{category.name}</td>
                                         <td style={{lineHeight: 1}}>
                                             {
                                                 category.subCategories && category.subCategories.length > 0
-                                                    ? category.subCategories.map(item => {
+                                                    ? category.subCategories.map((item, index) => {
                                                         return <p
+                                                            key={index}
                                                             className="rounded p-0 mb-0 border"
                                                             style={{whiteSpace: "nowrap", backgroundColor:"#5c5c5cb0"}}
                                                         >

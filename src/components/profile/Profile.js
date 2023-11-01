@@ -64,14 +64,15 @@ function Profile(props) {
                     </div>
                 </a>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item preview-item">
+                
+                <a className="dropdown-item preview-item cursor-pointer" onClick={logout}>
                     <div className="preview-thumbnail">
                         <div className="preview-icon bg-dark rounded-circle">
                             <i className="mdi mdi-logout text-danger"></i>
                         </div>
                     </div>
                     <div className="preview-item-content">
-                        <span className="preview-subject mb-1" onClick={logout}>Log out</span>
+                        <span className="preview-subject mb-1">Log out</span>
                     </div>
                 </a>
 
