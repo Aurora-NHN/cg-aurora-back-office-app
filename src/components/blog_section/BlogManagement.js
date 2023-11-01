@@ -6,6 +6,7 @@ import styles from "./blog.module.scss"
 import {ProgressSpinner} from "primereact/progressspinner";
 import BlogManagementItem from "~/components/blog_section/BlogManagementItem";
 import {motion} from "framer-motion";
+import Reload from "~/components/blog_section/Reload";
 
 function BlogManagement() {
     const dispatch = useDispatch();
@@ -13,16 +14,9 @@ function BlogManagement() {
     const loadingBlogs = useSelector(selectGetBlogLoading);
     const getBlogsSuccess = useSelector(selectGetBlogsSuccess);
     const [displayBlogs, setDisplayBlogs] = useState([]);
-    const [disableReload, setDisableReload] = useState(false);
 
     const handleReload = () => {
-        if (!disableReload) {
             dispatch(getBlogs())
-        }
-        setDisableReload(true)
-        setTimeout(() => {
-            setDisableReload(false)
-        }, 5000)
     }
 
     useEffect(() => {
@@ -39,16 +33,7 @@ function BlogManagement() {
         <div className="card text-light p-2 position-relative">
             {loadingBlogs && <div className={styles.blogReload}><ProgressSpinner/></div>}
             <div className="d-flex justify-content-center mt-2">
-                <div className={clsx("position-absolute start-0 d-flex align-items-center"
-                    ,styles.reloadWrapper
-                    , {"cursor-pointer": !disableReload})}
-                     onClick={handleReload}
-                >
-                    <div className={clsx({[styles.reload]: !disableReload}, styles.reloadBtn, "ms-4")}>
-                        <i className={clsx("mdi mdi-reload fs-3", {"text-secondary opacity-50": disableReload})}></i>
-                    </div>
-                    <div className="ms-2">Reload</div>
-                </div>
+                <Reload onReload={handleReload}/>
                 <h1 className="text-info">Blog Management</h1>
             </div>
             <div className="widget widget_recent_posts mt-3">
