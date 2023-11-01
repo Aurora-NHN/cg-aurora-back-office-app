@@ -325,23 +325,6 @@ function AddProduct() {
                             <option value="Tarot">Tarot</option>
                           </select>
                         </div>
-                        {/* <div className="col-md-12">
-                          <label
-                            htmlFor="slug"
-                            className="col-12 col-form-label"
-                          >
-                            Slug
-                          </label>
-                          <div className="col-12">
-                            <input
-                              id="slug"
-                              name="slug"
-                              className="form-control here set-slug"
-                              type="text"
-                            />
-                          </div>
-                        </div> */}
-
                         <div className="col-md-6">
                           <label className="form-label">Price</label>
                           <input
