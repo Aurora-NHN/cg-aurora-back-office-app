@@ -83,4 +83,4 @@ export const selectLoginSuccess = (state) => state.login.loginSuccess;
 export const selectLogoutSuccess = (state) => state.login.logoutSuccess;
 export const selectToken = (state) => state.login.token;
 
-export default loginSlice.reducer;
+export default loginSlice;

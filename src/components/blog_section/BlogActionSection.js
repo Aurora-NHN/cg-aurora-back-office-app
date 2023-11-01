@@ -3,13 +3,14 @@ import styles from "./blog.module.scss"
 import {ConfirmPopup} from "primereact/confirmpopup";
 import {Button} from "primereact/button";
 import {useDispatch, useSelector} from "react-redux";
-import {getBlogs, selectBlog, selectBlogs, setBlog} from "~/features/blogSlice";
+import {getBlogs, selectBlog, selectBlogs, selectGetBlogsSuccess, setBlog} from "~/features/blogSlice";
 import {Modal} from "react-bootstrap";
 import clsx from "clsx";
 
 function BlogActionSection({handleSave}) {
     const blog = useSelector(selectBlog);
     const blogs = useSelector(selectBlogs);
+    const getBlogsSuccess = useSelector(selectGetBlogsSuccess);
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const handleCancel = () => {
@@ -21,7 +22,7 @@ function BlogActionSection({handleSave}) {
     }
 
     useEffect(() => {
-        if (!blogs || blogs.length === 0){
+        if (!getBlogsSuccess){
             dispatch(getBlogs())
         }
     },[]);

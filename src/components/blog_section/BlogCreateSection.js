@@ -184,8 +184,10 @@ function BlogCreateSection({submitClicked, toggleSaveValid}) {
 
     useEffect(() => {
         const handleBeforeUnload = (e) => {
-            e.preventDefault();
-            e.returnValue = "Dữ liệu chưa được lưu. Bạn có chắc chắn muốn rời khỏi trang?";
+            if (displayBlog && displayBlog.id){
+                e.preventDefault();
+                e.returnValue = "Dữ liệu chưa được lưu. Bạn có chắc chắn muốn rời khỏi trang?";
+            }
         };
 
         window.addEventListener("beforeunload", handleBeforeUnload);

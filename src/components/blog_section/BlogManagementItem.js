@@ -1,12 +1,13 @@
 import React, {useRef} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {confirmPopup} from "primereact/confirmpopup";
-import {deleteBlog} from "~/features/blogSlice";
+import {deleteBlog, setBlog} from "~/features/blogSlice";
 import aurora from "~/assets/images/aurora.jpg"
 
 function BlogManagementItem({blog = {}}) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const btnRef = useRef();
 
     const handleDeleteBlog = () => {
@@ -21,8 +22,14 @@ function BlogManagementItem({blog = {}}) {
             }
         });
     }
+
+    const handleEdit = () => {
+        dispatch(setBlog(blog));
+        navigate("/blogs/new")
+    }
+
     return (
-            <div className="media border border-danger-subtle rounded ps-0" key={blog.id}>
+            <div className="media border border-danger-subtle rounded ps-0 shadow-lg" key={blog.id}>
                 <div className="position-absolute end-0 cursor-pointer dropdown">
                      <span className="me-4"
                            data-bs-toggle="dropdown"
@@ -36,10 +43,10 @@ function BlogManagementItem({blog = {}}) {
                         <div className="card-body rounded hover-bg-dark px-2 py-0 d-flex align-items-center"
                              onClick={handleDeleteBlog}
                         >
-                            <i className="mdi mdi-newspaper fs-4"></i>
+                            <i className="mdi mdi-delete fs-4"></i>
                             <div className="ms-2">Delete</div>
                         </div>
-                        <div
+                        <div onClick={handleEdit}
                             className="card-body rounded hover-bg-dark px-2 py-0 d-flex align-items-center">
                             <i className="mdi mdi-email-edit fs-4"></i>
                             <span className="ms-2">Edit</span>
@@ -51,12 +58,12 @@ function BlogManagementItem({blog = {}}) {
                         </div>
                     </div>
                 </div>
-                <Link className="media-image" to={`/blogs/${blog.id}`}>
+                <div className="media-image">
                     <img src={blog.mainImageUrl || aurora} className="rounded" alt="img"/>
-                </Link>
+                </div>
                 <div className="media-body ms-2">
                     <h4>
-                        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                        <div className="text-primary mt-2 pe-5">{blog.title}</div>
                     </h4>
                     <div className="text-small description">
                         {
@@ -64,8 +71,8 @@ function BlogManagementItem({blog = {}}) {
                         }
                     </div>
                     <div
-                        className="item-meta position-absolute text-secondary bottom-0 float-right text-small end-0">
-                        <span className="me-4">{blog.createdAt}</span>
+                        className="item-meta position-absolute text-secondary bottom-0 pb-1 float-right text-small end-0">
+                        <span className="me-4">Created at: {blog.createdAt}</span>
                     </div>
                 </div>
             </div>

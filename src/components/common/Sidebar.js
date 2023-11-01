@@ -31,12 +31,12 @@ function Sidebar() {
                         <span className="nav-link">Navigation</span>
                     </li>
                     <li className="nav-item menu-items">
-                        <a className="nav-link" href="#">
+                        <Link to="/account-manage" className="nav-link">
                             <span className="menu-icon">
                                 <i className="mdi mdi-security"></i>
                             </span>
                             <span className="menu-title">Account manage</span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item menu-items">
                         <a className="nav-link" data-bs-toggle="collapse" href="#ui-basic"
@@ -50,14 +50,31 @@ function Sidebar() {
                         </a>
                         <div className="collapse" id="ui-basic">
                             <ul className="nav flex-column sub-menu">
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Category</a></li>
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Sub category</a></li>
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Product</a></li>
-                                <li className="nav-item"><a className="nav-link"
-                                                            href="#">Product review</a></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                            to="/store/category">Category</Link></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                               to="/store/sub-category">Sub Category</Link></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li className="nav-item menu-items">
+                        <a className="nav-link" data-bs-toggle="collapse" href="#ui-basic-product"
+                           aria-expanded="false" // xem lại phần này
+                           aria-controls="ui-basic">
+                            <span className="menu-icon">
+                                <i className="mdi mdi-collage"></i>
+                            </span>
+                            <span className="menu-title">Product manage</span>
+                            <i className="menu-arrow"></i>
+                        </a>
+                        <div className="collapse" id="ui-basic-product">
+                            <ul className="nav flex-column sub-menu">
+                                <li className="nav-item"><Link className="nav-link"
+                                                               to="/product/add">Add Product</Link></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                               to="/product/list">List Product</Link></li>
+                                <li className="nav-item"><Link className="nav-link"
+                                                               to="/product/detail">Product Detail</Link></li>
                             </ul>
                         </div>
                     </li>
