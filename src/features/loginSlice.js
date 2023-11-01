@@ -60,7 +60,8 @@ export const loginSlice = createSlice({
                 state.loading = false;
                 state.value = action.payload;
                 state.loginError = false;
-                localStorage.setItem("token", action.payload.data);
+                localStorage.setItem("token", action.payload.data.jwtToken);
+                localStorage.setItem("user", JSON.stringify(action.payload.data.userResponseDTO))
             })
             .addCase(logoutAdmin.fulfilled, (state, action) => {
                 state.logoutSuccess = true;
