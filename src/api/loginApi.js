@@ -4,7 +4,7 @@ import {AURORA_API} from "~/app/constants";
 export const login = async (data) => {
     try {
         return await axios.post(
-            `${AURORA_API}/admin/login`, data
+            `${AURORA_API}/admin/login`, data     
         );
     } catch (e) {
         return e.response
