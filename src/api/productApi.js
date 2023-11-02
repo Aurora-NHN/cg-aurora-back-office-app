@@ -20,12 +20,12 @@ export const getProductApi = async (pageable={}) =>{
     }
 }
 
-export const createProductApi = async (body) => {
+export const createProductApi = async (formData) => {
     const token = localStorage.getItem('token')
     try {
         return await axios.post(
             `${AURORA_API}/admin/products`,
-            body,
+            formData,
             {
                 headers: {
                     Authorization: "Bearer " + token,
@@ -34,7 +34,7 @@ export const createProductApi = async (body) => {
             }
         );
     } catch (e) {
-        console.log("Create categories error!", e)
+        console.log("Create product error!", e)
         return e.response;
     }
 }

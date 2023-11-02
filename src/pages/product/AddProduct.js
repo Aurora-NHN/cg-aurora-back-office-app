@@ -1,26 +1,36 @@
 import {Link} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useFormik} from "formik";
 import {toast} from "react-toastify";
 import * as Yup from "yup";
 import "react-toastify/dist/ReactToastify.css";
+import {useDispatch, useSelector} from "react-redux";
+import {getAllSubCategories, selectAllSubCategories} from "~/features/categorySlice";
+import {createProduct} from "~/features/productSlice";
+
 function AddProduct() {
+    const dispatch = useDispatch();
+    const subCategories = useSelector(selectAllSubCategories);
     const [images, setImages] = useState([]);
-    const [mainImage, setMainImage] = useState(null);
-    const [renderFiles, setRenderFiles] = useState([]);
+    const [mainImageUrl, setMainImageUrl] = useState(null);
+    const [subImageUrls, setSubImageUrls] = useState([]);
     const initialValues = {
         name: '',
         price: '',
         weight: '',
         quantity: '',
         description: '',
-        author:'',
-        include:'',
-        producer:'',
-        height:'',
+        author: '',
+        include: '',
+        producer: '',
+        height: '',
         productImageList: [],
         subCategoryId: ''
     };
+
+    useEffect(() => {
+        dispatch(getAllSubCategories());
+    }, [])
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -55,51 +65,56 @@ function AddProduct() {
             .required("Số lượng không được để trống"),
         subCategoryId: Yup.string()
             .required("Vui lòng chọn danh mục cho sản phẩm")
-            // .notOneOf(["Chọn ngày sinh"], "Hãy chọn ngày sinh")
+        // .notOneOf(["Chọn ngày sinh"], "Hãy chọn ngày sinh")
+    });
+    const onSubmit = async (values) => {
+        if (images.length < 1 || images.length > 7) {
+            toast.error("Bạn phải thêm 1-7 hình ảnh cho sản phầm");
+        } else {
+            dispatch(createProduct({
+                ...values,
+                productImageList: images
+            }))
+        }
+    };
+    const formik = useFormik({
+        initialValues,
+        validationSchema,
+        onSubmit
     });
 
     const handleFileChange = (e) => {
-        const images = e.target.files;
 
+        const images = e.target.files;
         const imagesArray = Array.from(images);
 
-        if (imagesArray.length > 0 && imagesArray.length <= 7){
-            setImages(imagesArray);
-            const file = imagesArray[0];
-            if (file){
-                if (mainImage){
-                    URL.revokeObjectURL(mainImage);
-                }
-                setMainImage(URL.createObjectURL(file));
-            }
-            const newImages =  imagesArray.slice(1);
-
-            if (newImages.length > 0){
-                const newRenderFiles = [];
-                if (renderFiles.length > 0){
-                    for (let i = 0; i <renderFiles.length; i++){
-                        URL.revokeObjectURL(renderFiles[i]);
-                    }
-                }
-                for (let i = 0; i < newImages.length; i++){
-                   const itemFileUrl = URL.createObjectURL(newImages[i]);
-                   newRenderFiles.push(itemFileUrl);
-                }
-                setRenderFiles(newRenderFiles);
-            }
-        } else  {
+        if (imagesArray.length > 7) {
             toast.error("Số lượng hình ảnh tải lên không được vượt quá 7 hình!", {
                 position: toast.POSITION.TOP_RIGHT,
                 type: toast.TYPE.ERROR,
             });
-        }
+        } else if (imagesArray.length > 0) {
 
+            if (mainImageUrl) {
+                URL.revokeObjectURL(mainImageUrl)
+            }
+            subImageUrls.forEach(item => URL.revokeObjectURL(item))
+            setImages(imagesArray);
+        }
     }
-    const formik = useFormik({
-        initialValues,
-        validationSchema,
-        // onSubmit,
-    });
+
+    useEffect(() => {
+        if (images.length >= 1) {
+            setMainImageUrl(URL.createObjectURL(images[0]))
+            setSubImageUrls([])
+            if (images.length > 1) {
+                setSubImageUrls(images.map((image, index) => {
+                    if (index > 0) return URL.createObjectURL(image)
+                }))
+            }
+        }
+    }, [images])
+
     return (
         <div className="ec-content-wrapper">
             <div className="content">
@@ -129,7 +144,7 @@ function AddProduct() {
                                 display: "flex",
                             }}
                         >
-                              <span style={{margin: "auto", position: "relative"}}>View All</span>
+                            <span style={{margin: "auto", position: "relative"}}>View All</span>
                         </Link>
                     </div>
                 </div>
@@ -139,7 +154,13 @@ function AddProduct() {
                             <div className="card-header card-header-border-bottom">
                                 <h2 className="text-light">Add Product</h2>
                             </div>
-                            <div className="card-body">
+                        </div>
+                        <form
+                            className="card-body"
+                            onSubmit={formik.handleSubmit}
+                        >
+
+                            <div>
                                 <div className="row ec-vendor-uploads">
                                     <div className="col-lg-4">
                                         <div className="ec-vendor-img-upload">
@@ -156,7 +177,7 @@ function AddProduct() {
                                                             accept=".png, .jpg, .jpeg"
                                                             onChange={handleFileChange}
                                                         />
-                                                        <label htmlFor="imageUpload">
+                                                        <label htmlFor="productImageList">
                                                             <img
                                                                 src="https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/icons/edit.svg"
                                                                 className="svg_img header_svg"
@@ -176,35 +197,56 @@ function AddProduct() {
                                                         </label>
                                                     </div>
                                                     <div className="avatar-preview ec-preview">
-                                                        <div className="imagePreview ec-div-preview">
+                                                        <div className="imagePreview ec-div-preview d-flex justify-content-center">
                                                             <img
                                                                 className="ec-image-preview"
-                                                                src={mainImage ? mainImage : "https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/products/vender-upload-preview.jpg"}
+                                                                src={mainImageUrl ? mainImageUrl : "https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/products/vender-upload-preview.jpg"}
                                                                 alt="edit"
-                                                                style={{height: 410, width: 370, borderRadius: 10, objectFit: "cover"}}
+                                                                style={{
+                                                                    height: 410,
+                                                                    width: 370,
+                                                                    borderRadius: 10,
+                                                                    objectFit: "cover"
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {/*Kết thúc hình ảnh lớn*/}
                                                 <div className="thumb-upload-set">
-                                                    {/*Hình ảnh lớn*/}
-                                                    <div style={{display: 'flex', justifyContent: "center", flexDirection: 'row', flexWrap: 'wrap'}}>
+
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        justifyContent: "center",
+                                                        flexDirection: 'row',
+                                                        flexWrap: 'wrap'
+                                                    }}>
                                                         {
-                                                            renderFiles.map((imgUrl, index) => (
-                                                                <div className="thumb-upload" key={index}>
-                                                                    <div className="thumb-preview ec-preview">
-                                                                        <div className="image-thumb-preview">
-                                                                            <img
-                                                                                className="image-thumb-preview ec-image-preview"
-                                                                                src={imgUrl ? imgUrl : "https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/products/vender-upload-preview.jpg"}
-                                                                                alt="edit"
-                                                                                style={{marginTop: 25, height: 100, width: 100, borderRadius: 10, marginLeft: '0.5rem'}}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))
+                                                            (!subImageUrls)
+                                                                ? <></>
+                                                                : (subImageUrls.map((imgUrl, index) => {
+                                                                    if (imgUrl)
+                                                                        return (
+                                                                            <div className="thumb-upload" key={index}>
+                                                                                <div className="thumb-preview ec-preview">
+                                                                                    <div className="image-thumb-preview">
+                                                                                        <img
+                                                                                            className="image-thumb-preview ec-image-preview"
+                                                                                            src={imgUrl}
+                                                                                            alt="edit"
+                                                                                            style={{
+                                                                                                marginTop: 25,
+                                                                                                height: 100,
+                                                                                                width: 100,
+                                                                                                borderRadius: 10,
+                                                                                                marginLeft: '0.5rem'
+                                                                                            }}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        )
+                                                                }))
                                                         }
                                                     </div>
                                                 </div>
@@ -213,7 +255,7 @@ function AddProduct() {
                                     </div>
                                     <div className="col-lg-8">
                                         <div className="ec-vendor-upload-detail">
-                                            <form className="row g-3">
+                                            <div className="row g-3">
                                                 <div className="col-md-6">
                                                     <label htmlFor="name" className="form-label">
                                                         Product name:
@@ -245,27 +287,32 @@ function AddProduct() {
                                                         Select Sub Categories
                                                     </label>
                                                     {/*category*/}
-                                                    <select name="categories" id="Categories" className="form-select">
-                                                        <option value="Vòng Tay Phong Thủy">
-                                                            Vòng Tay Phong Thủy
-                                                        </option>
-                                                        <option value="Ngọc Bích Nephrite">
-                                                            Ngọc Bích Nephrite
-                                                        </option>
-                                                        <option value="Nhẫn Phong Thủy">
-                                                            Nhẫn Phong Thủy
-                                                        </option>
-                                                        <option value="Dây Chuyền Phong Thủy">
-                                                            Dây Chuyền Phong Thủy
-                                                        </option>
-                                                        <option value="Vật Phẩm Phong Thủy">
-                                                            Vật Phẩm Phong Thủy
-                                                        </option>
-                                                        <option value="Hoa Tai Phong Thủy">
-                                                            Hoa Tai Phong Thủy
-                                                        </option>
-                                                        <option value="Tarot">Tarot</option>
+                                                    <select
+                                                        className={`form-select ${
+                                                            formik.errors.subCategoryId && formik.touched.subCategoryId
+                                                                ? "is-invalid"
+                                                                : ""
+                                                        }`}
+                                                        name="subCategoryId"
+                                                        id="subCategoryId"
+                                                        required
+                                                        aria-required="true"
+                                                        value={formik.values.monthOfBirth}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                    >
+
+                                                        {subCategories.map((subCategory) => (
+                                                            <option key={subCategory.id}
+                                                                    value={subCategory.id}>{subCategory.name}</option>
+                                                        ))}
+
                                                     </select>
+                                                    {formik.errors.subCategoryId && (
+                                                        <div className="invalid-feedback">
+                                                            {formik.errors.subCategoryId}
+                                                        </div>
+                                                    )}
                                                     {/*    End Category*/}
                                                 </div>
                                                 <div className="col-md-6">
@@ -445,7 +492,8 @@ function AddProduct() {
                                                                 ? "is-invalid"
                                                                 : ""
                                                         }`}
-                                                        rows={4}
+                                                        rows={8}
+                                                        style={{resize:"vertical"}}
                                                         placeholder="Mô tả chi tiết thông tin về sản phẩm"
                                                         id="description"
                                                         name="description"
@@ -474,19 +522,19 @@ function AddProduct() {
                                                             display: "flex",
                                                         }}
                                                     >
-                            <span
-                                style={{margin: "auto", position: "relative"}}
-                            >
-                              Submit
-                            </span>
+                                                    <span
+                                                        style={{margin: "auto", position: "relative"}}
+                                                    >
+                                                      Submit
+                                                    </span>
                                                     </button>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

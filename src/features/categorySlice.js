@@ -4,7 +4,9 @@ import {
     createSubCategoryApi,
     deleteCategoryApi,
     getCategoryApi,
-    getSubCategoryApi, updateCategoryApi
+    getSubCategoryApi,
+    updateCategoryApi,
+    getAllSubCategoryApi
 } from "~/api/categoryApi";
 import {toast} from "react-toastify";
 
@@ -52,15 +54,25 @@ export const getSubCategories = createAsyncThunk("getSubCategory", async (arg, t
     return response.data.data;
 })
 
+export const getAllSubCategories = createAsyncThunk(
+    "getAllSubCategory", async (arg, thunkAPI) => {
+    const response = await getAllSubCategoryApi();
+    if (response && response.status !== 200) {
+        return thunkAPI.rejectWithValue(response.data.message)
+    }
+    return response.data.data;
+})
 export const categorySlice = createSlice({
     name: 'category',
     initialState: {
         categories: [],
         subCategoryPage: {},
+        subCategoryList: [],
         createCategorySuccess: false,
         getCategoriesSuccess: false,
         getSubCategoriesSuccess: false,
-        createCategoryError: null
+        createCategoryError: null,
+        getAllSubCategoriesSuccess: null
     },
     extraReducers: builder => {
         builder
@@ -147,6 +159,17 @@ export const categorySlice = createSlice({
                 state.getSubCategoriesSuccess = false;
                 toast(action.payload, {type: "error"})
             })
+            .addCase(getAllSubCategories.pending, (state) => {
+                state.getAllSubCategoriesSuccess = false;
+            })
+            .addCase(getAllSubCategories.fulfilled, (state, action) => {
+                state.getAllSubCategoriesSuccess = true;
+                state.subCategoryList = action.payload
+            })
+            .addCase(getAllSubCategories.rejected, (state, action) => {
+                state.getAllSubCategoriesSuccess = false;
+                toast(action.payload, {type: "error"})
+            })
     }
 })
 
@@ -155,4 +178,5 @@ export const selectSubCategoryPage = state => state.category.subCategoryPage;
 export const selectGetCategoriesSuccess = state => state.category.getCategoriesSuccess;
 export const selectGetSubCategoriesSuccess = state => state.category.getSubCategoriesSuccess;
 
+export const selectAllSubCategories = state => state.category.subCategoryList;
 export default categorySlice

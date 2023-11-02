@@ -1,8 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getProductApi, createProductApi} from "~/api/productApi";
+import {createProductApi, getProductApi} from "~/api/productApi";
 import {toast} from "react-toastify";
-import {createCategoryApi} from "~/api/categoryApi";
-import {createCategory} from "~/features/categorySlice";
 
 export const getProducts = createAsyncThunk(
     "getProduct",
@@ -16,14 +14,14 @@ export const getProducts = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
     "createNewProduct",
-    async (arg, thunkAPI) => {
-    const response = await createCategoryApi(arg);
-    if (response && response.status !== 201) {
-        return thunkAPI.rejectWithValue(response.data.message)
+    async (formData, thunkAPI) => {
+    const response = await createProductApi(formData);
+
+    if (response && response.status !== 200) {
+        return thunkAPI.rejectWithValue(response.status)
     }
-        console.log('response.data of create product');
-        console.log(response.data);
-    return response.data.data;
+
+    return response.data;
 })
 
 export const productSlice = createSlice({
@@ -32,14 +30,20 @@ export const productSlice = createSlice({
         values: [],
         value: {},
         pages: {},
+        productAdded: {},
         getProductsSuccess: false,
         createProductSuccess: false,
-        createProductError: null
+        createProductError: null,
+        productDetail: {},
+        getProductDetailSuccess: false
     },
     reducers: {
-        // setBlog: (state, action) => {
-        //     state.value = action.payload
-        // }
+        setProductDetail: (state, action) => {
+            state.productDetail = action.payload
+        },
+        setGetProductDetailSuccess: (state, action) => {
+            state.getProductDetailSuccess = action.payload;
+        }
     },
 
     extraReducers: builder =>{
@@ -58,11 +62,12 @@ export const productSlice = createSlice({
             //Add Product
             .addCase(createProduct.pending, (state) => {
                 state.createProductSuccess = false;
-                toast('Submitting...', {type: "info", isLoading: true, toastId: 'product Submitting'})
+                toast('Submitting...', {type: "info", isLoading: true, toastId: 'Product Submitting'})
             })
             .addCase(createProduct.fulfilled, (state, action) => {
                 state.createProductSuccess = true;
-                state.values.unshift(action.payload);
+                state.productAdded = action.payload;
+                // state.values.unshift(action.payload);
                 toast.dismiss('Product Submitting')
                 toast('Submitted! id: ' + action.payload.id, {type: "success"})
             })
@@ -74,5 +79,17 @@ export const productSlice = createSlice({
 
     }
 })
+
+export const {
+    setGetProductDetailSuccess,
+    setProductDetail
+} = productSlice.actions;
+
+export const selectProductDetail = state => state.product.productDetail;
+
+export const selectGetProductDetailSuccess  = state => state.product.getProductDetailSuccess;
+
 export const selectProducts = state => state.product.pages;
 export const selectGetProductsSuccess = state => state.product.getProductsSuccess;
+export const selectCreateProductSuccess = state => state.product.createProductSuccess;
+export const selectCreateProduct = state => state.product.productAdded;

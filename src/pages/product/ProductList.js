@@ -6,8 +6,9 @@ import {classNames} from "primereact/utils";
 import {Ripple} from "primereact/ripple";
 import {Divider} from "primereact/divider";
 import {useDispatch, useSelector} from "react-redux";
-import {getProducts, selectGetProductsSuccess, selectProducts} from "~/features/productSlice";
+import {getProducts, selectGetProductsSuccess, selectProducts, setProductDetail} from "~/features/productSlice";
 import formatPriceToVND from "~/util/formattedCurrentcy";
+
 function ProductList() {
     const dispatch = useDispatch();
     const productPage = useSelector(selectProducts);
@@ -104,6 +105,11 @@ function ProductList() {
         }
     }, [productPage]);
 
+    const handleClickProductDetail = (product) => {
+        dispatch(setProductDetail(product));
+        navigate("/product/detail");
+    }
+
     return (
         <div className="content">
             <div className="breadcrumb-wrapper d-flex align-items-center justify-content-between">
@@ -150,26 +156,42 @@ function ProductList() {
                                     id="responsive-data-table_wrapper"
                                     className="dataTables_wrapper dt-bootstrap5 no-footer"
                                 >
-                                    <div className="row justify-content-between top-information">
+                                    <div className="row d-flex justify-content-between align-items-center top-information">
+                                        <div className="d-flex col-6 align-items-center">
+                                            <span>Show:</span>
+                                            <Paginator
+                                                className="d-flex p-0 border-0"
+                                                style={{backgroundColor:'#191c24'}}
+                                                template={{
+                                                    layout: "RowsPerPageDropdown"
+                                                }}
+                                                first={first}
+                                                rows={rows}
+                                                rowsPerPageOptions={[5,10,20,50]}
+                                                totalRecords={productPage.totalElements}
+                                                onPageChange={onPageChange}
+                                            />
+
+                                        </div>
                                         <div
                                             id="responsive-data-table_filter"
-                                            className="dataTables_filter"
-                                            style={{transform: "translateX(82%)"}}
+                                            className="col-6 d-flex justify-content-end"
                                         >
                                             <label style={{display: "flex", width: "200px"}}>
                                                 <span style={{paddingTop: 5}}>Search:</span>
                                                 <input
                                                     type="search"
-                                                    className="form-control form-control-sm text-light"
+                                                    className="form-control form-control-sm text-light ms-2"
                                                     placeholder=""
                                                     aria-controls="responsive-data-table"
                                                 />
                                             </label>
                                         </div>
                                     </div>
+
                                     <table
                                         id="responsive-data-table"
-                                        className="table table-responsive dataTable no-footer table-dark table-striped table-hover"
+                                        className="table table-responsive dataTable no-footer table-dark table-striped table-hover mt-2"
                                         aria-describedby="responsive-data-table_info"
                                     >
                                         <thead>
@@ -239,7 +261,7 @@ function ProductList() {
                                                 ("")
                                             ) :
                                             (products.map((product, index) => (
-                                                <tr>
+                                                <tr key={index}>
                                                     <td className="sorting_1">
                                                         <img
                                                             className="tbl-thumb"
@@ -275,7 +297,7 @@ function ProductList() {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-outline-success"
-                                                                onClick={handleInfo}
+                                                                onClick={() => handleClickProductDetail(product)}
                                                             >
                                                                 Info
                                                             </button>
@@ -286,9 +308,11 @@ function ProductList() {
                                                                 aria-haspopup="true"
                                                                 aria-expanded="false"
                                                                 data-display="static"
+
                                                             >
                                                                 <span className="sr-only">Info</span>
                                                             </button>
+                                                            {/*Button*/}
                                                             <div className="dropdown-menu">
                                                                 <a className="dropdown-item" href="#">
                                                                     Edit
@@ -296,6 +320,7 @@ function ProductList() {
                                                                 <a className="dropdown-item" href="#">
                                                                     Delete
                                                                 </a>
+                                                            {/*    End button*/}
                                                             </div>
                                                         </div>
                                                     </td>
@@ -324,6 +349,7 @@ function ProductList() {
                                                 }}
                                                 first={first}
                                                 rows={rows}
+                                                rowsPerPageOptions={[5,10,20,50]}
                                                 totalRecords={productPage.totalElements}
                                                 onPageChange={onPageChange}
                                             />
