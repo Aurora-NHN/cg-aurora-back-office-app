@@ -55,13 +55,8 @@ function Sidebar() {
               <div className="collapse" id="ui-basic">
                 <ul className="nav flex-column sub-menu">
                   <li className="nav-item">
-                    <Link className="nav-link" to="/user/list">
+                    <Link className="nav-link" to="/users">
                       User List
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/user/profile">
-                      User Profile
                     </Link>
                   </li>
                 </ul>

@@ -14,3 +14,10 @@
     }
   }
 }
+.dropdown-menu {
+  .dropdown-item {
+    &:hover{
+      color: white;
+    }
+  }
+}
