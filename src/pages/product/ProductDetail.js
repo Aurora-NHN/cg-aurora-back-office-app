@@ -1,96 +1,22 @@
-import { useEffect, useState } from "react";
-import { Galleria } from "primereact/galleria";
-import { Link } from "react-router-dom";
+import {useEffect} from "react";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {selectProductDetail, setGetProductDetailSuccess} from "~/features/productSlice";
+import ProductImage from "~/pages/product/ProductImage";
+import formatPriceToVND from "~/util/formattedCurrentcy";
 
 function ProductDetail() {
-  const [images, setImages] = useState({});
-  const responsiveOptions = [
-    {
-      breakpoint: "991px",
-      numVisible: 4,
-    },
-    {
-      breakpoint: "767px",
-      numVisible: 3,
-    },
-    {
-      breakpoint: "575px",
-      numVisible: 1,
-    },
-  ];
-  const PhotoService = {
-    getData() {
-      return [
-        {
-          itemImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria1.jpg",
-          thumbnailImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria1s.jpg",
-          alt: "Description for Image 1",
-          title: "Title 1",
-        },
-        {
-          itemImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria2.jpg",
-          thumbnailImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria2s.jpg",
-          alt: "Description for Image 2",
-          title: "Title 2",
-        },
-        {
-          itemImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria3.jpg",
-          thumbnailImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria3s.jpg",
-          alt: "Description for Image 3",
-          title: "Title 3",
-        },
-        {
-          itemImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria4.jpg",
-          thumbnailImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria4s.jpg",
-          alt: "Description for Image 4",
-          title: "Title 4",
-        },
-        {
-          itemImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria5.jpg",
-          thumbnailImageSrc:
-            "https://primefaces.org/cdn/primereact/images/galleria/galleria5s.jpg",
-          alt: "Description for Image 5",
-          title: "Title 5",
-        },
-      ];
-    },
-
-    getImages() {
-      return Promise.resolve(this.getData());
-    },
-  };
+  const dispatch = useDispatch();
+  const product = useSelector(selectProductDetail);
+  console.log('product in product detail')
+  console.log(product)
   useEffect(() => {
-    PhotoService.getImages().then((data) => setImages(data));
-  }, []);
+    dispatch(setGetProductDetailSuccess(false));
+  }, [])
 
-  const itemTemplate = (item) => {
-    return (
-      <img
-        src={item.itemImageSrc}
-        alt={item.alt}
-        style={{ width: "100%", display: "block" }}
-      />
-    );
-  };
 
-  const thumbnailTemplate = (item) => {
-    return (
-      <img
-        src={item.thumbnailImageSrc}
-        alt={item.alt}
-        style={{ display: "block" }}
-      />
-    );
-  };
+
+
 
   return (
     <div className="content">
@@ -144,19 +70,7 @@ function ProductDetail() {
                       className="single-pro-img"
                       style={{ position: "relative", width: "100%" }}
                     >
-                      <div className="card">
-                        <Galleria
-                          value={images}
-                          responsiveOptions={responsiveOptions}
-                          numVisible={5}
-                          style={{ maxWidth: "640px" }}
-                          item={itemTemplate}
-                          thumbnail={thumbnailTemplate}
-                          circular
-                          autoPlay
-                          transitionInterval={2000}
-                        />
-                      </div>
+                      <ProductImage />
                     </div>
                   </div>
                 </div>
@@ -164,7 +78,7 @@ function ProductDetail() {
                   <div className="row product-overview">
                     <div className="col-12">
                       <h5 className="product-title">
-                        Pure Leather Purse for Woman
+                        {product.name}
                       </h5>
                       <p className="product-rate">
                         <i className="mdi mdi-star is-rated" />
@@ -178,38 +92,90 @@ function ProductDetail() {
                         typesetting industry. Lorem Ipsum has been the
                         industry's standard dummy text ever since the 1990.
                       </p>
-                      <p className="product-desc">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1990.
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry.
-                      </p>
+
                       <div className="ec-ofr">
-                        <h6>Available offers</h6>
+                        <h6 style={{color:"red"}}>
+                          Giá bán: <span className="product-price">{formatPriceToVND(product.price)}</span>
+                        </h6>
+                        <h6>Information</h6>
                         <ul>
+                          {
+                            (!product.quantitySold || product.quantitySold === 0)?
+                                (
+                                    <li>
+                                      <b>Số lượng đã bán:</b> 0 sản phẩm
+                                    </li>
+                                ):
+                                (
+                                    <li>
+                                      <b>Số lượng đã bán:</b> {product.quantitySold} sản phẩm
+                                    </li>
+                                )
+                        }
+
                           <li>
-                            <b>Special Price :</b> Get extra 16% off (price
-                            inclusive of discount) <a href="#">T&amp;C</a>{" "}
+                            <b>Tồn kho:</b> {product.quantity} sản phẩm
+                          </li>
+
+                          <li>
+                            <b>Tác giả:</b> {product.author}
+                          </li>
+
+                          {
+                            (!product.weight || product.weight === 0)?
+                                (
+                                    " "
+                                ):
+                                (
+                                    <li>
+                                      <b>Cân nặng:</b> {product.weight} gram
+                                    </li>
+                                )
+                          }
+                          {
+                            (!product.height || product.height === 0)?
+                                (
+                                    " "
+                                ):
+                                (
+
+                                    <li>
+                                      <b>Chiều cao:</b> {product.height} cm
+                                    </li>
+                                )
+                          }
+
+                          <li>
+                            <b>Nhà sản xuất:</b> {product.producer}
+                          </li>
+                          {
+                            (!product.createDay || product.createDay === null)?
+                                (
+                                    " "
+                                ):
+                                (
+
+                                    <li>
+                                      <b>Ngày thêm sản phẩm:</b> {product.createDay}
+                                    </li>
+                                )
+                          }
+
+
+                          <li>
+                            <b>Trạng thái hoạt động:</b> {
+                            (product.isActivated == true)? "Đang hoạt động": "Tạm ngưng hoạt động"
+                          }
                           </li>
                           <li>
-                            <b>Bank Offer :</b> 10% off on XYZ Bank Cards, up to
-                            $12. On orders of $200 and above{" "}
-                            <a href="#">T&amp;C</a>
-                          </li>
-                          <li>
-                            <b>Bank Offer :</b> 5% Unlimited Cashback on Ekka
-                            XYZ Bank Credit Card <a href="#">T&amp;C</a>
-                          </li>
-                          <li>
-                            <b>Bank Offer :</b> Flat $50 off on first Ekka Pay
-                            Later order of $200 and above{" "}
-                            <a href="#">T&amp;C</a>
+                            <b>Thuộc danh mục:</b> {product.subCategory?.name}
                           </li>
                         </ul>
                       </div>
-                      <p className="product-price">Price: $120</p>
-                      <p className="product-sku">SKU#: WH12</p>
+
+
+
+
                     </div>
                   </div>
                 </div>
@@ -310,13 +276,7 @@ function ProductDetail() {
                       role="tabpanel"
                     >
                       <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
+                        {product.description}
                       </p>
                       <ul className="features">
                         <li>

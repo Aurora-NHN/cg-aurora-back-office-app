@@ -1,7 +1,7 @@
 import {Route, Routes} from "react-router-dom";
 import {ROUT_DATA} from "./routeData";
-import Home from "~/pages/Home";
 import HomeLayout from "~/components/layout/HomeLayout";
+import HomePage from "~/pages/HomePage";
 
 function AppRoutes(){
 
@@ -14,7 +14,7 @@ function AppRoutes(){
                     return <Route key={index} path={route.path} element={Layout !== null ? <Layout><Page/></Layout> : <Page/>}/>
                 })
             }
-            <Route path="*" element={<HomeLayout><Home/></HomeLayout>}/>
+            <Route path="*" element={<HomeLayout><HomePage/></HomeLayout>}/>
         </Routes>
     )
 }
