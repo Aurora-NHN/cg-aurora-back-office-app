@@ -6,20 +6,19 @@ import {Ripple} from "primereact/ripple";
 import {Divider} from "primereact/divider";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    changeRoles,
+    deleteUsers,
     getAllUserPage,
     registerUser,
-    selectErrorOfRegister,
+    selectSuccessOfChangeRole,
+    selectSuccessOfDelete,
     selectSuccessOfRegister,
     selectTotalElements,
-    selectTotalPages,
-    selectUserList,
-    setErrorOfRegister,
-    setSuccessOfRegister
+    selectUserList, setSuccessOfRegister
 } from "~/features/userSlice";
 import {VIETNAMESE_REGEX} from "~/app/constants";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function UserList() {
@@ -27,15 +26,9 @@ function UserList() {
     const users = useSelector(selectUserList);
     const dispatch = useDispatch();
     const successRegister = useSelector(selectSuccessOfRegister);
-    const errorRegister = useSelector(selectErrorOfRegister);
     const closeModal = useRef();
-
-    const handleInfo = () => {
-        navigate("/user/profile");
-    };
     const [first, setFirst] = useState([0, 0, 0]);
     const [rows, setRows] = useState([10, 10, 10]);
-    const totalPages = useSelector(selectTotalPages);
     const totalElements = useSelector(selectTotalElements);
     const [username, setUsername] = useState("");
     const [page, setPage] = useState(0);
@@ -45,8 +38,12 @@ function UserList() {
         size: size,
         username: username
     });
+    const successOfChangeRole = useSelector(selectSuccessOfChangeRole);
+    const successOfDelete = useSelector(selectSuccessOfDelete);
 
-
+    const handleInfo = () => {
+        navigate("/user/profile");
+    };
     const onPageChange = (e, index) => {
         setPageable({
             page: e.page,
@@ -119,32 +116,13 @@ function UserList() {
 
     useEffect(() => {
         dispatch(getAllUserPage(pageable));
-    }, [pageable, successRegister]);
+    }, [pageable, successRegister, successOfChangeRole, successOfDelete]);
 
-    const handleRegisterSuccess = () => {
-        dispatch(setSuccessOfRegister(false));
-        toast.success("Register Success !", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: toast.TYPE.SUCCESS,
-        });
-        setTimeout(() => {
-            closeModal.current.click();
-        }, 200);
-    };
-
-    const handleRegisterFail = () => {
-        toast.error(errorRegister, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: toast.TYPE.ERROR,
-        });
-        dispatch(setErrorOfRegister(null));
-    };
-
-    const handleSearch =  (e) => {
+    const handleSearchInputChange = (e) => {
         if (e === undefined) {
-             setUsername("");
+            setUsername("");
         } else {
-             setUsername(e);
+            setUsername(e);
         }
 
     };
@@ -202,13 +180,15 @@ function UserList() {
     };
 
     useEffect(() => {
+
         if (successRegister) {
             formik.resetForm();
-            handleRegisterSuccess();
-        } else if (errorRegister) {
-            handleRegisterFail();
+            setTimeout(() => {
+                closeModal.current.click();
+            }, 100);
+            dispatch(setSuccessOfRegister(false));
         }
-    }, [successRegister, errorRegister]);
+    }, [successRegister]);
 
     const formik = useFormik({
         initialValues,
@@ -216,15 +196,21 @@ function UserList() {
         onSubmit,
     });
 
-
-    async function handleSearchSubmit(e) {
+    function handleSearchSubmit(e) {
         e.preventDefault()
-       await setPageable({
-           page: page,
-           size: size,
-           username: username
-       })
-        dispatch(getAllUserPage(pageable))
+        dispatch(getAllUserPage({
+            page: page,
+            size: size,
+            username: username
+        }))
+    }
+
+    function handleChangeRole(name) {
+        dispatch(changeRoles(name));
+    }
+
+    function handleDelete(name) {
+        dispatch(deleteUsers(name));
     }
 
     return (
@@ -274,7 +260,7 @@ function UserList() {
                                     id="responsive-data-table_wrapper"
                                     className="dataTables_wrapper dt-bootstrap5 no-footer"
                                 >
-                                    <div className="row justify-content-between top-information">
+                                    <div className="row justify-content-around top-information">
                                         <div
                                             className="dataTables_length col"
                                             id="responsive-data-table_length"
@@ -282,23 +268,24 @@ function UserList() {
                                         </div>
                                         <div
                                             id="responsive-data-table_filter"
-                                            className="dataTables_filter col"
-                                            style={{
-                                                transform: "translateX(57%)",
-                                            }}
+                                            className="dataTables_filter col d-flex justify-content-end"
                                         >
                                             <form onSubmit={(e) => handleSearchSubmit(e)}>
                                                 <label style={{display: "flex"}}>
-                                                    <input type="submit" value="Search"
-                                                           style={{margin: "auto 0.5rem"}}/>
+
                                                     <input
                                                         type="search"
                                                         className="form-control form-control-sm"
                                                         placeholder=""
                                                         aria-controls="responsive-data-table"
                                                         style={{width: "fit-content"}}
-                                                        onChange={(e) => handleSearch(e.target.value)}
+                                                        onKeyDown={(e)=> {
+                                                            if (e.key === 'Enter') handleSearchSubmit(e)
+                                                        }}
+                                                        onChange={(e) => handleSearchInputChange(e.target.value)}
                                                     />
+                                                    <input type="submit" value="Search"
+                                                           style={{margin: "auto 0.5rem"}}/>
                                                 </label>
                                             </form>
                                         </div>
@@ -414,7 +401,7 @@ function UserList() {
                                                         <button
                                                             type="button"
                                                             className="btn btn-outline-success"
-                                                            onClick={handleInfo}
+                                                            // onClick={handleInfo}
                                                         >
                                                             Info
                                                         </button>
@@ -428,13 +415,14 @@ function UserList() {
                                                         >
                                                             <span className="sr-only">Info</span>
                                                         </button>
-                                                        <div className="dropdown-menu">
-                                                            <a className="dropdown-item" href="#">
-                                                                Edit
-                                                            </a>
-                                                            <a className="dropdown-item" href="#">
+                                                        <div className="dropdown-menu"
+                                                             aria-labelledby="dropdownMenuButtonDark">
+                                                            <Link className="dropdown-item" to="#" onClick={() => handleChangeRole(user.username)}>
+                                                                Change role
+                                                            </Link>
+                                                            <Link className="dropdown-item" to="#" onClick={() => handleDelete(user.username)}>
                                                                 Delete
-                                                            </a>
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 </td>

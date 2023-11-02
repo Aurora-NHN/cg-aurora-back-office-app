@@ -37,11 +37,11 @@ export const register = async (data) => {
     return result;
 }
 
-export const changeRoleAdmin = async (username) => {
+export const changeRole = async (username) => {
     let token = localStorage.getItem("token");
     try {
         return await axios.get(
-            `${AURORA_API}/admin/change-role-admin?username=${username}` , {
+            `${AURORA_API}/admin/change-role?username=${username}` , {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
@@ -52,11 +52,11 @@ export const changeRoleAdmin = async (username) => {
     }
 }
 
-export const changeRoleUser = async (username) => {
+export const deleteUser = async (username) => {
     let token = localStorage.getItem("token");
     try {
         return await axios.get(
-            `${AURORA_API}/admin/change-role-user?username=${username}` , {
+            `${AURORA_API}/admin/delete?username=${username}` , {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
