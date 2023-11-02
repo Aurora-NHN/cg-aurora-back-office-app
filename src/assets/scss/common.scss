@@ -45,3 +45,21 @@
 .fs-8{
   font-size: 0.7rem;
 }
+
+.p-galleria-item-container{
+  .p-galleria-item{
+    img{
+      height: 370px;
+      object-fit: cover;
+    }
+  }
+}
+
+.p-galleria-thumbnail-item-content{
+
+  img{
+    height: 100px;
+    width: 98%;
+    object-fit: cover;
+  }
+}

@@ -111,3 +111,21 @@ export const createSubCategoryApi = async (data) =>{
         return e.response;
     }
 }
+
+export const getAllSubCategoryApi = async () =>{
+    const token = localStorage.getItem('token')
+    try {
+
+        return await axios.get(
+            `${AURORA_API}/admin/sub-categories/all`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }
+        );
+    } catch (e) {
+        console.log("Get sub-categories error!", e)
+        return e.response;
+    }
+}

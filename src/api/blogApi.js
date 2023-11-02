@@ -36,7 +36,6 @@ export const findBlogs = async () => {
 
 export const updateBlog = async (blog) => {
     try {
-        console.log("update blog: ",blog)
         return await axios.put(
             `${AURORA_API}/blogs`,
             blog,
