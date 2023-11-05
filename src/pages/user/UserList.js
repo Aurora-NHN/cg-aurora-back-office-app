@@ -14,7 +14,8 @@ import {
     selectSuccessOfDelete,
     selectSuccessOfRegister,
     selectTotalElements,
-    selectUserList, setSuccessOfRegister
+    selectUserList,
+    setSuccessOfRegister
 } from "~/features/userSlice";
 import {VIETNAMESE_REGEX} from "~/app/constants";
 import {useFormik} from "formik";
@@ -41,8 +42,9 @@ function UserList() {
     const successOfChangeRole = useSelector(selectSuccessOfChangeRole);
     const successOfDelete = useSelector(selectSuccessOfDelete);
 
-    const handleInfo = () => {
-        navigate("/user/profile");
+    const handleInfo = (user) => {
+        // navigate("/user/profile");
+        // console.log(user)
     };
     const onPageChange = (e, index) => {
         setPageable({
@@ -279,7 +281,7 @@ function UserList() {
                                                         placeholder=""
                                                         aria-controls="responsive-data-table"
                                                         style={{width: "fit-content"}}
-                                                        onKeyDown={(e)=> {
+                                                        onKeyDown={(e) => {
                                                             if (e.key === 'Enter') handleSearchSubmit(e)
                                                         }}
                                                         onChange={(e) => handleSearchInputChange(e.target.value)}
@@ -401,7 +403,9 @@ function UserList() {
                                                         <button
                                                             type="button"
                                                             className="btn btn-outline-success"
-                                                            // onClick={handleInfo}
+                                                            onClick={() => {
+                                                                handleInfo(user)
+                                                            }}
                                                         >
                                                             Info
                                                         </button>
@@ -417,10 +421,12 @@ function UserList() {
                                                         </button>
                                                         <div className="dropdown-menu"
                                                              aria-labelledby="dropdownMenuButtonDark">
-                                                            <Link className="dropdown-item" to="#" onClick={() => handleChangeRole(user.username)}>
+                                                            <Link className="dropdown-item" to="#"
+                                                                  onClick={() => handleChangeRole(user.username)}>
                                                                 Change role
                                                             </Link>
-                                                            <Link className="dropdown-item" to="#" onClick={() => handleDelete(user.username)}>
+                                                            <Link className="dropdown-item" to="#"
+                                                                  onClick={() => handleDelete(user.username)}>
                                                                 Delete
                                                             </Link>
                                                         </div>

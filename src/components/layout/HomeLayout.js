@@ -2,7 +2,8 @@ import React from 'react';
 import Sidebar from "~/components/common/Sidebar";
 import Header from "~/components/common/Header";
 import Footer from "~/components/common/Footer";
-function HomeLayout({children}){
+
+function HomeLayout({children}) {
     return (
         <>
             <div className="container-scroller">

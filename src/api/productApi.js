@@ -1,11 +1,11 @@
 import axios from "axios";
 import {AURORA_API} from "~/app/constants";
 
-export const getProductApi = async (pageable={}) =>{
+export const getProductApi = async (pageable = {}) => {
     const token = localStorage.getItem('token')
     try {
-        const page = pageable.page?`page=${pageable.page}`:'';
-        const size = pageable.size?`size=${pageable.size}`:'';
+        const page = pageable.page ? `page=${pageable.page}` : '';
+        const size = pageable.size ? `size=${pageable.size}` : '';
         return await axios.get(
             `${AURORA_API}/admin/products?${page}&${size}`,
             {

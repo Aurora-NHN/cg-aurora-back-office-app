@@ -258,7 +258,7 @@ function ProductList() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {(!products || products === null)
+                                        {(!products)
                                             ? (<></>)
                                             : (products.map((product, index) => (
                                                 <tr key={index}>

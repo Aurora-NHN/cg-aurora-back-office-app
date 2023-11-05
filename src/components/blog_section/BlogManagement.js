@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getBlogs, selectBlogs, selectGetBlogLoading, selectGetBlogsSuccess} from "~/features/blogSlice";
-import clsx from "clsx";
 import styles from "./blog.module.scss"
 import {ProgressSpinner} from "primereact/progressspinner";
 import BlogManagementItem from "~/components/blog_section/BlogManagementItem";
@@ -16,7 +15,7 @@ function BlogManagement() {
     const [displayBlogs, setDisplayBlogs] = useState([]);
 
     const handleReload = () => {
-            dispatch(getBlogs())
+        dispatch(getBlogs())
     }
 
     useEffect(() => {

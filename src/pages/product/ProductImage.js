@@ -7,8 +7,6 @@ function ProductImage() {
     const product = useSelector(selectProductDetail);
     const [images, setImages] = useState([]);
     const imageUrlList = product?.productImageUrlList;
-    console.log('product')
-    console.log(product)
 
     const responsiveOptions = [
         {
@@ -69,7 +67,6 @@ function ProductImage() {
                 value={images}
                 responsiveOptions={responsiveOptions}
                 numVisible={3}
-                // style={{maxWidth: 640}}
                 item={itemTemplate}
                 thumbnail={thumbnailTemplate}
                 circular

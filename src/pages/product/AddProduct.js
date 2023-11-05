@@ -197,7 +197,8 @@ function AddProduct() {
                                                         </label>
                                                     </div>
                                                     <div className="avatar-preview ec-preview">
-                                                        <div className="imagePreview ec-div-preview d-flex justify-content-center">
+                                                        <div
+                                                            className="imagePreview ec-div-preview d-flex justify-content-center">
                                                             <img
                                                                 className="ec-image-preview"
                                                                 src={mainImageUrl ? mainImageUrl : "https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/products/vender-upload-preview.jpg"}
@@ -493,7 +494,7 @@ function AddProduct() {
                                                                 : ""
                                                         }`}
                                                         rows={8}
-                                                        style={{resize:"vertical"}}
+                                                        style={{resize: "vertical"}}
                                                         placeholder="Mô tả chi tiết thông tin về sản phẩm"
                                                         id="description"
                                                         name="description"

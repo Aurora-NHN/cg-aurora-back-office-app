@@ -5,13 +5,12 @@ export const getUserPage = async ({page, size, username}) => {
     let token = localStorage.getItem("token");
     let result = null;
     try {
-        result =  await axios.get(
+        result = await axios.get(
             `${AURORA_API}/admin/users?page=${page}&size=${size}&username=${username}`, {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
             }
-
         );
 
     } catch (e) {
@@ -23,8 +22,8 @@ export const register = async (data) => {
     let result = null;
     let token = localStorage.getItem("token");
     try {
-        result =  await axios.post(
-            `${AURORA_API}/register-user`,data,{
+        result = await axios.post(
+            `${AURORA_API}/register-user`, data, {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
@@ -41,7 +40,7 @@ export const changeRole = async (username) => {
     let token = localStorage.getItem("token");
     try {
         return await axios.get(
-            `${AURORA_API}/admin/change-role?username=${username}` , {
+            `${AURORA_API}/admin/change-role?username=${username}`, {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
@@ -56,7 +55,7 @@ export const deleteUser = async (username) => {
     let token = localStorage.getItem("token");
     try {
         return await axios.get(
-            `${AURORA_API}/admin/delete?username=${username}` , {
+            `${AURORA_API}/admin/delete?username=${username}`, {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
