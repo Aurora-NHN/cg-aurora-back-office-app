@@ -82,9 +82,9 @@ export const categorySlice = createSlice({
             })
             .addCase(createCategory.fulfilled, (state, action) => {
                 state.createCategorySuccess = true;
-                state.categories.unshift(action.payload);
+                if (action.payload) state.categories.unshift(action.payload);
                 toast.dismiss('categorySubmitting')
-                toast('Submitted! id: ' + action.payload.id, {type: "success"})
+                toast('Submitted! id: ' + action.payload?.id, {type: "success"})
             })
             .addCase(createCategory.rejected, (state, action) => {
                 state.createCategorySuccess = false;
