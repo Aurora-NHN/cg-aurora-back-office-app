@@ -14,7 +14,7 @@ import {
     selectSuccessOfDelete,
     selectSuccessOfRegister,
     selectTotalElements,
-    selectUserList, setSuccessOfRegister
+    selectUserList, setChangeRoleSuccess, setSuccessOfDelete, setSuccessOfRegister
 } from "~/features/userSlice";
 import {VIETNAMESE_REGEX} from "~/app/constants";
 import {useFormik} from "formik";
@@ -116,6 +116,8 @@ function UserList() {
 
     useEffect(() => {
         dispatch(getAllUserPage(pageable));
+        dispatch(setChangeRoleSuccess(false));
+        dispatch(setSuccessOfDelete(false));
     }, [pageable, successRegister, successOfChangeRole, successOfDelete]);
 
     const handleSearchInputChange = (e) => {

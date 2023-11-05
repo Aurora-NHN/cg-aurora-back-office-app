@@ -180,44 +180,44 @@ function ProductDetail() {
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-12 u-card">
-                  <div className="card card-default seller-card">
-                    <div className="card-body text-center">
-                      <a
-                        href="javascript:0"
-                        className="text-secondary d-inline-block"
-                      >
-                        <div className="image mb-3">
-                          <img
-                            src="https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/user/u-xl-4.jpg"
-                            className="img-fluid rounded-circle"
-                            alt="Avatar Image"
-                          />
-                        </div>
-                        <h5 className="text-light">John Karter</h5>
-                        <p className="product-rate">
-                          <i className="mdi mdi-star is-rated" />
-                          <i className="mdi mdi-star is-rated" />
-                          <i className="mdi mdi-star is-rated" />
-                          <i className="mdi mdi-star is-rated" />
-                          <i className="mdi mdi-star" />
-                        </p>
-                        <ul className="list-unstyled">
-                          <li className="d-flex mb-1">
-                            <i className="mdi mdi-map mr-1" />
-                            <span>321/2, rio street, usa.</span>
-                          </li>
-                          <li className="d-flex mb-1">
-                            <i className="mdi mdi-email mr-1" />
-                            <span>example@email.com</span>
-                          </li>
-                          <li className="d-flex">
-                            <i className="mdi mdi-whatsapp mr-1" />
-                            <span>+00 987-654-3210</span>
-                          </li>
-                        </ul>
-                      </a>
-                    </div>
-                  </div>
+                  {/*<div className="card card-default seller-card">*/}
+                  {/*  <div className="card-body text-center">*/}
+                  {/*    <a*/}
+                  {/*      href="javascript:0"*/}
+                  {/*      className="text-secondary d-inline-block"*/}
+                  {/*    >*/}
+                  {/*      <div className="image mb-3">*/}
+                  {/*        <img*/}
+                  {/*          src="https://maraviyainfotech.com/projects/ekka/ekka-v36/ekka-admin/assets/img/user/u-xl-4.jpg"*/}
+                  {/*          className="img-fluid rounded-circle"*/}
+                  {/*          alt="Avatar Image"*/}
+                  {/*        />*/}
+                  {/*      </div>*/}
+                  {/*      <h5 className="text-light">John Karter</h5>*/}
+                  {/*      <p className="product-rate">*/}
+                  {/*        <i className="mdi mdi-star is-rated" />*/}
+                  {/*        <i className="mdi mdi-star is-rated" />*/}
+                  {/*        <i className="mdi mdi-star is-rated" />*/}
+                  {/*        <i className="mdi mdi-star is-rated" />*/}
+                  {/*        <i className="mdi mdi-star" />*/}
+                  {/*      </p>*/}
+                  {/*      <ul className="list-unstyled">*/}
+                  {/*        <li className="d-flex mb-1">*/}
+                  {/*          <i className="mdi mdi-map mr-1" />*/}
+                  {/*          <span>321/2, rio street, usa.</span>*/}
+                  {/*        </li>*/}
+                  {/*        <li className="d-flex mb-1">*/}
+                  {/*          <i className="mdi mdi-email mr-1" />*/}
+                  {/*          <span>example@email.com</span>*/}
+                  {/*        </li>*/}
+                  {/*        <li className="d-flex">*/}
+                  {/*          <i className="mdi mdi-whatsapp mr-1" />*/}
+                  {/*          <span>+00 987-654-3210</span>*/}
+                  {/*        </li>*/}
+                  {/*      </ul>*/}
+                  {/*    </a>*/}
+                  {/*  </div>*/}
+                  {/*</div>*/}
                 </div>
               </div>
               <div className="row review-rating mt-4">
