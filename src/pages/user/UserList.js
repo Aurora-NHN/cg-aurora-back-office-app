@@ -378,8 +378,8 @@ function UserList() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {users.map((user) =>
-                                            (<tr className="odd">
+                                        {users.map((user, index) =>
+                                            (<tr className="odd" key={index}>
                                                 <td className="sorting_1">
                                                     <img
                                                         className="vendor-thumb"

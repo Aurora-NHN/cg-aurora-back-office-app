@@ -41,6 +41,7 @@ function BlogManagement() {
                     {
                         displayBlogs.map((blog, index) => (
                             <motion.div
+                                key={index}
                                 className={"col-md-6 mt-2 " + styles.blogItem}
                                 initial={{opacity: 0, scale: 0.4}}
                                 animate={{opacity: 1, scale: 1}}

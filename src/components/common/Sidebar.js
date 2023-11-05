@@ -118,9 +118,9 @@ function Sidebar() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/product/detail">
+                    <span className="nav-link cursor-pointer disabled">
                       Product Detail
-                    </Link>
+                    </span>
                   </li>
                 </ul>
               </div>

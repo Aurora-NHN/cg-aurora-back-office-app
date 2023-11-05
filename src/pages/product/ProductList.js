@@ -156,18 +156,19 @@ function ProductList() {
                                     id="responsive-data-table_wrapper"
                                     className="dataTables_wrapper dt-bootstrap5 no-footer"
                                 >
-                                    <div className="row d-flex justify-content-between align-items-center top-information">
+                                    <div
+                                        className="row d-flex justify-content-between align-items-center top-information">
                                         <div className="d-flex col-6 align-items-center">
                                             <span>Show:</span>
                                             <Paginator
                                                 className="d-flex p-0 border-0"
-                                                style={{backgroundColor:'#191c24'}}
+                                                style={{backgroundColor: '#191c24'}}
                                                 template={{
                                                     layout: "RowsPerPageDropdown"
                                                 }}
                                                 first={first}
                                                 rows={rows}
-                                                rowsPerPageOptions={[5,10,20,50]}
+                                                rowsPerPageOptions={[5, 10, 20, 50]}
                                                 totalRecords={productPage.totalElements}
                                                 onPageChange={onPageChange}
                                             />
@@ -257,10 +258,9 @@ function ProductList() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {(!products || products === null) ? (
-                                                ("")
-                                            ) :
-                                            (products.map((product, index) => (
+                                        {(!products || products === null)
+                                            ? (<></>)
+                                            : (products.map((product, index) => (
                                                 <tr key={index}>
                                                     <td className="sorting_1">
                                                         <img
@@ -270,25 +270,26 @@ function ProductList() {
                                                             style={{transform: "translateX(22px)"}}
                                                         />
                                                     </td>
-                                                    <td >
-                                                        <p className="mb-0" style={{whiteSpace:"pre-wrap"}}>{product.name}</p>
+                                                    <td>
+                                                        <p className="mb-0"
+                                                           style={{whiteSpace: "pre-wrap"}}>{product.name}</p>
                                                     </td>
-                                                        <td style={{textAlign:"center"}}>{formatPriceToVND(product.price)}</td>
-                                                    <td style={{textAlign:"center"}}>{product.quantity}</td>
-                                                    <td style={{textAlign:"center"}}>{product.quantitySold}</td>
+                                                    <td style={{textAlign: "center"}}>{formatPriceToVND(product.price)}</td>
+                                                    <td style={{textAlign: "center"}}>{product.quantity}</td>
+                                                    <td style={{textAlign: "center"}}>{product.quantitySold}</td>
                                                     {
                                                         (product.isActivated) ? (
-                                                            <td style={{textAlign:"center"}}>
+                                                            <td style={{textAlign: "center"}}>
                                                                 <span className="text-success ">Active</span>
                                                             </td>
                                                         ) : (
-                                                            <td style={{textAlign:"center"}}>
-                                                                <span  className="text-danger">Inactive</span>
+                                                            <td style={{textAlign: "center"}}>
+                                                                <span className="text-danger">Inactive</span>
                                                             </td>
                                                         )
                                                     }
 
-                                                    <td style={{textAlign:"center"}}>{product.createDay}</td>
+                                                    <td style={{textAlign: "center"}}>{product.createDay}</td>
                                                     <td>
                                                         <div
                                                             className="btn-group mb-1"
@@ -320,7 +321,7 @@ function ProductList() {
                                                                 <a className="dropdown-item" href="#">
                                                                     Delete
                                                                 </a>
-                                                            {/*    End button*/}
+                                                                {/*    End button*/}
                                                             </div>
                                                         </div>
                                                     </td>
@@ -349,7 +350,7 @@ function ProductList() {
                                                 }}
                                                 first={first}
                                                 rows={rows}
-                                                rowsPerPageOptions={[5,10,20,50]}
+                                                rowsPerPageOptions={[5, 10, 20, 50]}
                                                 totalRecords={productPage.totalElements}
                                                 onPageChange={onPageChange}
                                             />
