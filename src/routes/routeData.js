@@ -1,6 +1,6 @@
 import HomeLayout from "~/components/layout/HomeLayout";
 import Blog from "~/pages/blog/Blog";
-import Login from "~/pages/Login";
+import Login from "~/components/authentication/Login";
 import Category from "~/pages/store/Category";
 import AddProduct from "~/pages/product/AddProduct";
 import ProductList from "~/pages/product/ProductList";

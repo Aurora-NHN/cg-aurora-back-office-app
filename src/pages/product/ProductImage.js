@@ -69,7 +69,6 @@ function ProductImage() {
                 value={images}
                 responsiveOptions={responsiveOptions}
                 numVisible={3}
-                // style={{maxWidth: 640}}
                 item={itemTemplate}
                 thumbnail={thumbnailTemplate}
                 circular
